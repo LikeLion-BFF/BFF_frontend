@@ -23,6 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
+*.DS_Store
+
 # local env files
 .env*.local
 

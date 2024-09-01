@@ -1,5 +1,7 @@
-import React from 'react';
+// import React from 'react';
 import '../style/login.scss';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 function Login() {
 
@@ -19,7 +21,19 @@ function Login() {
           {/* 카카오 로그인 버튼에 클릭 이벤트 연결 */}
           <h1 className="button" onClick={handleKakaoLogin}>카카오</h1>
           <h1 className="button">네이버</h1>
-          <h1 className="button">구글</h1>
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              if (credentialResponse.credential) {
+                const decoded = jwtDecode(credentialResponse.credential);
+                console.log(decoded);
+              } else {
+                console.log('Credential is undefined');
+              }
+            }}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+          />
         </div>
       </div>
     </div>
