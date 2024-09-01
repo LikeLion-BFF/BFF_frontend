@@ -20,5 +20,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "src/global.d.ts"  // 글로벌 타입 정의 파일 추가
+  ]
 }
