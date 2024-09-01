@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  height: 100vh;
+}
+
+.login-container {
+  flex: 1;
+  max-width: 50vw;
+  margin: 10px;
+}
+
+.login {
+  font-weight: 400;
+  font-size: 25px;
+  margin: 3%;
+}
+
+.desc {
+  margin: 3%;
+
+}
+
+.button {
+  border: 1px solid green;
+  margin: 10%;
+  padding: 5%;
+  width: 35vw;
+}
