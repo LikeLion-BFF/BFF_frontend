@@ -4,6 +4,7 @@
 
 import React, { useEffect } from 'react';
 import Login from '../src/Login/login';
+import Home from '../src/Home/Home';
 
 function App() {
 
@@ -26,7 +27,8 @@ function App() {
 
   return (
     <>
-      <Login />
+      {/* <Login /> */}
+      <Home />
     </>
   );
 }
