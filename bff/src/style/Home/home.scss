@@ -1,0 +1,21 @@
+// home.scss
+.home-container {
+  display: flex;
+  height: 100vh; 
+  width: 100%;  
+}
+
+.left-menu {
+  flex: 1; 
+}
+
+.bingo-main {
+  flex: 2; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right-menu {
+  flex: 1; 
+}
