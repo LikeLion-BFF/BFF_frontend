@@ -12,18 +12,18 @@
 
 .bingo-header {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 80px;
 }
 
 .bingo-header h2 {
-  margin: 0;
-  font-size: 24px;
+  margin-bottom: 20px;
+  font-size: 28px;
   font-weight: bold;
 }
 
 .bingo-header p {
   margin: 0;
-  font-size: 16px;
+  font-size: 18px;
   color: #777;
 }
 
@@ -34,16 +34,33 @@
 
 .bingo-grid {
   display: grid;
-  grid-template-columns: repeat(3, 140px); 
-  grid-template-rows: repeat(3, 140px);
+  grid-template-columns: repeat(3, 160px); 
+  grid-template-rows: repeat(3, 160px);
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 
 .bingo-cell {
-  width: 140px;
-  height: 140px;
+  width: 160px;
+  height: 160px;
   background-color: #BABABA;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: #aaa;
+  }
+
+  &:active {
+    background-color: #888;
+    transform: scale(0.95);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 10px #666;
+  }
 }
 
 .bingo-footer {
@@ -52,14 +69,17 @@
 }
 
 .bingo-footer p {
-  font-size: 14px;
+  font-size: 16px;
   color: #555;
+  margin-top: 30px;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
 }
 
-.download-button {
-  background-color: transparent;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
+.download-icon {
+  margin-left: 30px; 
+  width: 17px;       
+  height: 14px;
 }
