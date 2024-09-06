@@ -30,7 +30,7 @@ function LeftMenu() {
   const teamNum={}
   const userStyle={
     width: 20,
-    heigth: 20,
+    height: 20,
     paddingRight: 10,
   }
   const teamMates={
