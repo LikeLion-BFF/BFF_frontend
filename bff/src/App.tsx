@@ -5,6 +5,8 @@
 import React, { useEffect } from 'react';
 import Login from '../src/Login/login';
 import Home from '../src/Home/Home';
+import StartingPage from './StartingPage/StartingPage';
+import Invite from './Invite';
 
 function App() {
 
@@ -28,7 +30,9 @@ function App() {
   return (
     <>
       {/* <Login /> */}
-      <Home />
+      {/* <Home /> */}
+      {/* <StartingPage /> */}
+      <Invite/>
     </>
   );
 }

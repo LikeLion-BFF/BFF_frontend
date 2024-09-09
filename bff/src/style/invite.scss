@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+.mainContainer {
+  background-color: rgb(228, 228, 228);
+  height: 50%;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.desc {
+  font-size: 2.5vh;
+  padding: 5vh;
+  padding-bottom: 2vh;
+}
+
+.name {
+  font-size: 2vh;
+  margin: 2vh;
+}
+
+.nameArea {
+  font-size: 2vh;
+  height: 2.6vh;
+  width: 14.6vw;
+}
+
+.team {
+  font-size: 2vh;
+  margin: 2vh;
+}
+
+.teamSelect {
+  font-size: 2vh;
+  width: 15vw;
+  height: 3vh;
+}
+
+.submitButton {
+  border: none;
+  cursor: pointer;
+  margin: 2vh;
+  margin-top: 4vh;
+  padding: 1vh;
+  width: 5vw;
+  font-size: 1.7vh;
+  background-color: gray;
+}

@@ -56,6 +56,7 @@ function Login() {
               if (credentialResponse.credential) {
                 const decoded = jwtDecode(credentialResponse.credential);
                 console.log(decoded);
+                localStorage.setItem('userToken', credentialResponse.credential);
               } else {
                 console.log('Credential is undefined');
               }
