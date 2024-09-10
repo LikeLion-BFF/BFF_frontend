@@ -6,7 +6,8 @@ import React, { useEffect } from 'react';
 import Login from '../src/Login/login';
 import Home from '../src/Home/Home';
 import StartingPage from './StartingPage/StartingPage';
-import Invite from './Invite';
+import Invite from './Invite/Invite';
+import BingoBuilder from './BingoBuilder/BingoBuilder';
 
 function App() {
 
@@ -32,7 +33,8 @@ function App() {
       {/* <Login /> */}
       {/* <Home /> */}
       {/* <StartingPage /> */}
-      <Invite/>
+      {/* <Invite/> */}
+      <BingoBuilder />
     </>
   );
 }
