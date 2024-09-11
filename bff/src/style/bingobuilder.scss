@@ -1,0 +1,224 @@
+.reloadImage {
+  width: 20px;
+  height: 20px;
+}
+
+.horizontalLine {
+  width: 100%;
+  height: 0.1vh;
+  background-color: gray;
+}
+
+.sizeSelector {
+  display: flex;
+  gap: 10px;
+}
+
+.sizeButton {
+  padding: 1vh 2vh;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1.8vh;
+  font-weight: 100;
+  max-width: 17vw;
+
+  &:hover {
+    background-color: #ddd;
+  }
+
+  &.selected {
+    background-color: #888; /* 선택 시 어두운 배경색 */
+    color: white;
+  }
+}
+
+//----------------------------
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.container {
+  display: flex;
+  width: 100vw;
+  min-height: 100vh;
+  overflow: hidden;
+}
+.recommend {
+  width: 17vw;
+  min-height: 100vh;
+  border-right: solid gray 1px;
+}
+.bingoName {
+  font-size: 3vh;
+  margin: 2vh;
+  font-weight: bold;
+  height: 3.5vh;
+}
+.recommendList {}
+.refreshBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.refreshLabel {
+  font-size: 2vh;
+  margin: 2vh;
+}
+.refreshButton {
+  background-color: transparent;
+  border: solid black 1px;
+  border-radius: 20%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 2vh;
+}
+
+// -----------------------
+
+.bingo {
+  width: 66vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.bingoNameText {
+  border: none;
+  text-align: center;
+  resize: none;
+  font-size: 2.5vh;
+  max-height: 5vh;
+  padding: 1vh;
+  padding-bottom: 0;
+  margin-bottom: 2vh;
+}
+
+// -----------------------
+
+.settings {
+  max-width: 17vw;
+  max-height: 100vh;
+  border-left: solid gray 1px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  overflow:initial;
+  word-wrap: break-word;
+}
+
+.settingItems {
+  margin-top: 7vh;
+  margin-left: 3vh;
+}
+
+.title {
+  font-size: 2vh;
+  font-weight: bold;
+  margin: 2vh;
+  margin-left: 0;
+}
+
+.sizeSelector {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeSelector {
+  .MuiInputBase-root {
+    background-color: none;
+    border-radius: 10px;
+    padding: none;
+    max-width: 17vw;
+    min-width: 5vw;
+    margin-right: none;
+  }
+
+  .MuiOutlinedInput-root {
+    fieldset {
+      border-color: gray;
+    }
+
+    &.Mui-focused fieldset {
+      border-color: black;
+    }
+  }
+
+  .MuiInputLabel-root {
+    color: black;
+    max-width: 100%;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow: visible;
+    text-align: left;
+  }
+
+  .MuiPickersDay-root {
+    color: black;
+    &:hover {
+      background-color: #bfe4ff;
+    }
+  }
+
+  .MuiPickersDay-daySelected {
+    background-color: gray;
+    color: #fff;
+  }
+}
+
+.goalContainer, .teamContainer {
+  display: flex;
+  align-items: center;
+}
+
+.teamNum, .goal {
+  border: gray 1px solid;
+  resize: none;
+  font-size: 2vh;
+  border-radius: 5px;
+  width: 5vw;
+  height: 3.5vh;
+  margin-right: 1vh;
+  font-weight: bold;
+  line-height: 2.5vh;
+  padding: 5px 0 0 5px;
+}
+
+.teamNum:focus, .goal:focus {
+  outline: black 1px solid;
+}
+
+.teamNumText, .goalText {
+  font-size: 2vh;
+}
+
+// -----------------------
+
+.submit {
+  border: none;
+  padding: 1.5vh 7vh;
+  font-size: 2vh;
+  border-radius: 5px;
+  margin-bottom: 2vh;
+  margin-left: 3vh;
+}
+
+.submit:hover {
+  background-color: lightgray;
+}
+
+.submit:focus {
+  border: 1px solid black;
+}
