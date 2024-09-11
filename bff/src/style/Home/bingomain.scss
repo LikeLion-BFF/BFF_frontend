@@ -133,7 +133,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
   color: #555;
+  display: flex;
+  flex-direction: column;
+}
+  
+.image-placeholder input[type="file"] {
+  margin-top: 10px; 
+  cursor: pointer; 
 }
 
 .comment-placeholder {
@@ -159,3 +167,4 @@
 .bingo-cell.completed {
   background-color: black;
 }
+

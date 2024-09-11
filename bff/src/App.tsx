@@ -30,7 +30,7 @@ function App() {
   return (
     <>
       {/* <Login /> */}
-      {/* <Home /> */}
+      <Home />
       {/* <StartingPage /> */}
       <Invite/>
     </>
