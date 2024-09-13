@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../style/startingpage.scss';
 import axios from 'axios';
 
 function StartingPage() {
+  const navigate = useNavigate();
   const [bingoBoards, setBingoBoards] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get('YOUR_SERVER_ENDPOINT'); // 서버에서 fetch
-  //       setBingoBoards(response.data); // data 세팅
-  //     } catch (error) {
-  //       console.error('Error fetching BINGO data:', error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
+
+  // 빙고판 선택시 이동 위해
+  const handleBingoClick = (bingoId) => {
+    navigate(`/home/${bingoId}`);
+  };
   
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +39,7 @@ function StartingPage() {
       <div className="mainContainer">
         <div className="banner">
           <h1 className="logo">Bingle</h1>
-          <button className="newButton">빙고 생성</button>
+          <button className="newButton" onClick={() => navigate('/bingobuilder')}>빙고 생성</button>
           {/* 이동 navigation 추가 필요 */}
         </div>
         <div className="bingoContainer">

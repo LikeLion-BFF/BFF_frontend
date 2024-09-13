@@ -1,13 +1,10 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-
 import React, { useEffect } from 'react';
 import Login from '../src/Login/login';
 import Home from '../src/Home/Home';
 import StartingPage from './StartingPage/StartingPage';
-import Invite from './Invite/Invite';
+// import Invite from './Invite/Invite';
 import BingoBuilder from './BingoBuilder/BingoBuilder';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
 
@@ -28,14 +25,29 @@ function App() {
 
   }, []);
 
+  const isLoggedIn = localStorage.getItem('userToken'); // 로그인 체크하기
+
   return (
-    <>
-      {/* <Login /> */}
-      <Home />
-      {/* <StartingPage /> */}
-      {/* <Invite/> */}
-      <BingoBuilder />
-    </>
+    <Routes>
+      {!isLoggedIn ? (
+        <Route path="/" element={<Login />} />
+      ) : (
+        <>
+          <Route path="/" element={<StartingPage />} />
+          <Route path="/home/:bingoId" element={<Home />} />
+          {/* 빙고 선택하면 빙고 id로 이동 */}
+          <Route path="/bingobuilder" element={<BingoBuilder />} />
+        </>
+      )}
+    </Routes>
+
+    // <>
+    //   {/* <Login /> */}
+    //   <Home />
+    //   {/* <StartingPage /> */}
+    //   {/* <Invite/> */}
+    //   <BingoBuilder />
+    // </>
   );
 }
 
