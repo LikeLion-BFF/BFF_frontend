@@ -1,12 +1,13 @@
 .reloadImage {
   width: 20px;
   height: 20px;
+  padding-left: 2px;
 }
 
 .horizontalLine {
   width: 100%;
-  height: 0.1vh;
-  background-color: gray;
+  height: 0.2vh;
+  background-color: lightgray;
 }
 
 .sizeSelector {
@@ -25,12 +26,11 @@
   max-width: 17vw;
 
   &:hover {
-    background-color: #ddd;
+    background-color: hsla(183, 61%, 80%, 0.558);
   }
 
   &.selected {
-    background-color: #888; /* 선택 시 어두운 배경색 */
-    color: white;
+    background-color: hsl(183, 61%, 77%);
   }
 }
 
@@ -44,18 +44,33 @@ html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  background-color: white;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 .container {
   display: flex;
   width: 100vw;
-  min-height: 100vh;
-  overflow: hidden;
+  height: 100vh;
+  background-color: #FFF9EA;
+  padding: 0;
 }
 .recommend {
   width: 17vw;
-  min-height: 100vh;
-  border-right: solid gray 1px;
+  height: 97vh;
+  background-color: white;
+  margin: 2vh;
+  box-shadow: 5px 5px 0 rgba(254, 114, 16, 0.25);
+  border-radius: 10px;
 }
 .bingoName {
   font-size: 3vh;
@@ -84,6 +99,9 @@ html, body {
   align-items: center;
   margin-right: 2vh;
 }
+.refreshButton:hover {
+  background-color: #eee;
+}
 
 // -----------------------
 
@@ -93,35 +111,52 @@ html, body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-right: 0;
+  background-color: transparent;
 }
 .bingoNameText {
   border: none;
   text-align: center;
   resize: none;
   font-size: 2.5vh;
-  max-height: 5vh;
+  height: 5vh;
+  width: 15vw;
   padding: 1vh;
   padding-bottom: 0;
   margin-bottom: 2vh;
+  background-color: transparent;
+  color: #FE7210;
+  font-weight: bold;
 }
+
+.bingoFrame {}
 
 // -----------------------
 
 .settings {
   max-width: 17vw;
-  max-height: 100vh;
-  border-left: solid gray 1px;
+  height: 97vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  overflow:initial;
-  word-wrap: break-word;
+  padding-right: 2vh;
+  background-color: white;
+  margin: 2vh;
+  box-shadow: 5px 5px 0 rgba(254, 114, 16, 0.25);
+  border-radius: 10px;
 }
 
 .settingItems {
   margin-top: 7vh;
   margin-left: 3vh;
+}
+
+.settingTitle {
+  font-size: 2.5vh;
+  font-weight: bold;
+  text-align: center;
+  margin: -2vh 0 8vh 0;
 }
 
 .title {
@@ -138,7 +173,7 @@ html, body {
 
 .timeSelector {
   .MuiInputBase-root {
-    background-color: none;
+    background-color: hsla(183, 61%, 80%, 0.68);
     border-radius: 10px;
     padding: none;
     max-width: 17vw;
@@ -148,11 +183,11 @@ html, body {
 
   .MuiOutlinedInput-root {
     fieldset {
-      border-color: gray;
+      border-color: none;
     }
 
     &.Mui-focused fieldset {
-      border-color: black;
+      border-color: #0D9CA4;
     }
   }
 
@@ -166,14 +201,14 @@ html, body {
   }
 
   .MuiPickersDay-root {
-    color: black;
+    color: #0D9CA4;
     &:hover {
       background-color: #bfe4ff;
     }
   }
 
   .MuiPickersDay-daySelected {
-    background-color: gray;
+    background-color: #0D9CA4;
     color: #fff;
   }
 }
@@ -184,7 +219,6 @@ html, body {
 }
 
 .teamNum, .goal {
-  border: gray 1px solid;
   resize: none;
   font-size: 2vh;
   border-radius: 5px;
@@ -194,10 +228,12 @@ html, body {
   font-weight: bold;
   line-height: 2.5vh;
   padding: 5px 0 0 5px;
+  background-color: hsl(183, 61%, 77%);
+  border: none;
 }
 
 .teamNum:focus, .goal:focus {
-  outline: black 1px solid;
+  outline: #0D9CA4 1px solid;
 }
 
 .teamNumText, .goalText {
@@ -213,12 +249,14 @@ html, body {
   border-radius: 5px;
   margin-bottom: 2vh;
   margin-left: 3vh;
+  background-color: #0D9CA4;
+  color: white;
 }
 
 .submit:hover {
-  background-color: lightgray;
+  background-color: hsl(183, 61%, 77%);
 }
 
 .submit:focus {
-  border: 1px solid black;
+  border: 1px solid #0b848a;
 }

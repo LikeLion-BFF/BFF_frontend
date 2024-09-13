@@ -5,51 +5,51 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import TextField from '@mui/material/TextField';
-import dayjs from 'dayjs';
+// import TextField from '@mui/material/TextField';
+import { Dayjs } from 'dayjs';
 
 function BingoBuilder() {
-  const [bingoName, setBingoName] = useState<string>("");
+  const [bingoName, setBingoName] = useState<string>('');
   const [selectedSize, setSelectedSize] = useState<number | null>(null);
   const [datePicked, setDatePicked] = useState<Date | null>(null);
   const [teamInput, setTeamInput] = useState<number>(0);
   const [goalInput, setGoalInput] = useState<number>(0);
 
-  // 1. textarea의 변경을 처리하는 함수
-  const handleBingoNameChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+  // Handle textarea change
+  const handleBingoNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBingoName(event.target.value);
     console.log(`bingoName: ${bingoName}`);
   };
 
-  // size 버튼 선택 관리 함수
+  // Handle size button selection
   const handleSizeSelect = (size: number) => {
     setSelectedSize(size);
-    console.log(`bingo size: ${selectedSize}`);
+    console.log(`bingo size: ${size}`);
   };
 
-  // 날짜 선택 값
-  const handleDateChange = (newValue: dayjs.Dayjs | null) => {
-    if (newValue !== null) {
-      setDatePicked(newValue.toDate()); // Dayjs object -> Date object
-      console.log(`finish date: ${datePicked}`);
+  // Handle date change
+  const handleDateChange = (newValue: Dayjs | null) => {
+    if (newValue) {
+      setDatePicked(newValue.toDate()); // Convert Dayjs object to Date
+      console.log(`finish date: ${newValue.toDate()}`);
     } else {
       setDatePicked(null);
-      console.log(`finish date === null`)
+      console.log('finish date: null');
     }
   };
 
-  // 팀 숫자 값
-  const handleTeamInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const teamNumber = +event.target.value;
+  // Handle team input change
+  const handleTeamInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const teamNumber = Number(event.target.value);
     setTeamInput(teamNumber);
-    console.log(`team number: ${teamInput}`);
+    console.log(`team number: ${teamNumber}`);
   };
 
-  // 목표 빙고 값
-  const handleGoalInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const goalNumber = +event.target.value;
+  // Handle goal input change
+  const handleGoalInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const goalNumber = Number(event.target.value);
     setGoalInput(goalNumber);
-    console.log(`bingo goal: ${goalInput}`);
+    console.log(`bingo goal: ${goalNumber}`);
   };
 
   // Function to send data to the server
@@ -77,7 +77,6 @@ function BingoBuilder() {
         throw new Error('Network response was not ok');
       }
 
-      // Handle success
       console.log('Data successfully sent to the server');
     } catch (error) {
       console.error('Error:', error);
@@ -91,32 +90,33 @@ function BingoBuilder() {
         <div className="horizontalLine"></div>
         <div className="recommendList">
           <div className="refreshBanner">
-            <label htmlFor="refresh" className='refreshLabel'>빙고 내용 추천</label>
-            <button name="refresh" className='refreshButton'>
-              <img src={reload} alt="reload image" className="reloadImage" />
+            <label htmlFor="refresh" className="refreshLabel">빙고 내용 추천</label>
+            <button name="refresh" className="refreshButton">
+              <img src={reload} alt="reload" className="reloadImage" />
             </button>
           </div>
-          <div className='recommendItems'>
+          <div className="recommendItems">
             {/* 추천 내용 리스트 아이템 */}
           </div>
         </div>
       </div>
       <div className="bingo">
-        <textarea
+        <input
+          type="text"
+          required
           name="bingoName"
           id="bingoName"
           className="bingoNameText"
-          placeholder='제목을 입력해주세요.'
-          value={bingoName} // 2. bingoName 상태 바인딩
-          onChange={handleBingoNameChange} // 3. onChange 이벤트 핸들러 바인딩
+          placeholder="제목을 입력해주세요."
+          value={bingoName}
+          onChange={handleBingoNameChange}
         />
-        <div className="bingoFrame">
-
-        </div>
+        <div className="bingoFrame"></div>
         <p className="desc">* 빙고판 안을 클릭하여 내용을 채워보세요</p>
       </div>
       <div className="settings">
         <div className="settingItems">
+          <h1 className="settingTitle">빙고판 편집</h1>
           <p className="title">크기</p>
           <div className="sizeSelector">
             {[3, 4, 5].map((size) => (
@@ -133,25 +133,43 @@ function BingoBuilder() {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateTimePicker']}>
               <DateTimePicker
-                label="종료 시간을 선택하세요" 
-                className='timeSelector'
-                onChange={handleDateChange}
-                renderInput={(params: { value: string | null }) => <TextField {...params} />}
+                label="종료 시간을 선택하세요"
+                className="timeSelector"
+                onChange={(newValue) => handleDateChange(newValue)}
+                // renderInput={(params) => <TextField {...params} />}
               />
             </DemoContainer>
           </LocalizationProvider>
           <p className="title">참여팀 수</p>
           <div className="teamContainer">
-            <textarea name="teamNum" id="teamNum" className="teamNum" onChange={handleTeamInputChange} />
+            <input
+              type="number"
+              name="teamNum"
+              required
+              id="teamNum"
+              className="teamNum"
+              onChange={handleTeamInputChange}
+            />
             <label htmlFor="teamNum" className="teamNumText">팀</label>
           </div>
           <p className="title">목표</p>
           <div className="goalContainer">
-            <textarea name="goal" id="goal" className="goal" onChange={handleGoalInputChange}/>
+            <input
+              type="number"
+              min="1"
+              max="5"
+              required
+              name="goal"
+              id="goal"
+              className="goal"
+              onChange={handleGoalInputChange}
+            />
             <label htmlFor="goal" className="goalText">빙고</label>
           </div>
         </div>
-        <button className="submit" onClick={sendDataToServer}>빙고판 생성</button>
+        <button className="submit" onClick={sendDataToServer}>
+          빙고판 생성
+        </button>
       </div>
     </div>
   );
