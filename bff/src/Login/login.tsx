@@ -3,6 +3,8 @@ import '../style/login.scss';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 import { useEffect } from 'react';
+import { API_URL } from '../API_URL';
+import axios from 'axios';
 
 function Login() {
 
@@ -52,13 +54,20 @@ function Login() {
           <div id="naverIdLogin" className="button"></div>
 
           <GoogleLogin
-            onSuccess={(credentialResponse) => {
+            onSuccess={async (credentialResponse) => {
               if (credentialResponse.credential) {
                 const decoded = jwtDecode(credentialResponse.credential);
                 console.log(decoded);
-                localStorage.setItem('userToken', credentialResponse.credential);
+                localStorage.setItem('userToken', credentialResponse.credential); // local storage에 저장
+                try {
+                  const response = await axios.get(`${API_URL}/google/login/`);
+                  console.log(response.data);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                } catch (error: any) {
+                  console.error('Error during Axios GET request - Google login: ', error.response)
+                }
               } else {
-                console.log('Credential is undefined');
+                console.log('Credential is undefined - Google login');
               }
             }}
             onError={() => {
