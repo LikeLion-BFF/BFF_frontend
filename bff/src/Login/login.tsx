@@ -5,8 +5,10 @@ import { jwtDecode } from "jwt-decode";
 import { useEffect } from 'react';
 import { API_URL } from '../API_URL';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+  const navigate = useNavigate();
 
   // 카카오 로그인 처리 함수
   const handleKakaoLogin = () => {
@@ -22,7 +24,7 @@ function Login() {
         clientId: "rxdXJKf6trtwICVPPRCc", 
         callbackUrl: "http://localhost:5173/naver-callback",  // 네이버 개발자 센터에 등록한 Redirect URI
         isPopup: false, // 팝업 형태로 로그인을 수행할지 설정 (true: 팝업, false: 리디렉트)
-        loginButton: {color: "green", type: 3, height: 60} 
+        loginButton: {color: "green", type: 3, height: 42} 
       });
 
       naverLogin.init();
@@ -46,34 +48,37 @@ function Login() {
       <div className="login-container">
         <h1 className="login">간편로그인</h1>
         <p className="desc">소셜 로그인 인증을 통해 간편하게 서비스를 이용할 수 있어요</p>
-        <div>
+        <div className="login-buttons">
           {/* 카카오 로그인 버튼에 클릭 이벤트 연결 */}
-          <h1 className="button" onClick={handleKakaoLogin}>카카오</h1>
+          <h1 id="kakao" onClick={handleKakaoLogin}>카카오</h1>
 
           {/* 네이버 로그인 버튼 추가 */}
           <div id="naverIdLogin" className="button"></div>
 
-          <GoogleLogin
-            onSuccess={async (credentialResponse) => {
-              if (credentialResponse.credential) {
-                const decoded = jwtDecode(credentialResponse.credential);
-                console.log(decoded);
-                localStorage.setItem('userToken', credentialResponse.credential); // local storage에 저장
-                try {
-                  const response = await axios.get(`${API_URL}/google/login/`);
-                  console.log(response.data);
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                } catch (error: any) {
-                  console.error('Error during Axios GET request - Google login: ', error.response)
+          <div id="google-log">
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                if (credentialResponse.credential) {
+                  const decoded = jwtDecode(credentialResponse.credential);
+                  console.log(decoded);
+                  localStorage.setItem('userToken', credentialResponse.credential); // local storage에 저장
+                  try {
+                    const response = await axios.get(`${API_URL}/google/login/`);
+                    console.log(response.data);
+                    navigate("/");
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  } catch (error: any) {
+                    console.error('Error during Axios GET request - Google login: ', error.response)
+                  }
+                } else {
+                  console.log('Credential is undefined - Google login');
                 }
-              } else {
-                console.log('Credential is undefined - Google login');
-              }
-            }}
-            onError={() => {
-              console.log('Login Failed');
-            }}
-          />
+              }}
+              onError={() => {
+                console.log('Login Failed');
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

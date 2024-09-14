@@ -25,7 +25,9 @@ function App() {
 
   }, []);
 
-  const isLoggedIn = localStorage.getItem('userToken'); // 로그인 체크하기
+  const isLoggedIn = setInterval(() => {
+    localStorage.getItem('userToken');
+   }, 500); // 로그인 체크하기
 
   return (
     <Routes>
