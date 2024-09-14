@@ -36,7 +36,8 @@ function App() {
       ) : (
         <>
           <Route path="/" element={<StartingPage />} />
-          <Route path="/home/:bingoId" element={<Home />} />
+          {/* <Route path="/home/:bingoId" element={<Home />} /> */}
+          <Route path="/home" element={<Home />} />
           {/* 빙고 선택하면 빙고 id로 이동 */}
           <Route path="/bingobuilder" element={<BingoBuilder />} />
         </>

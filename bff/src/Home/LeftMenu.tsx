@@ -1,57 +1,35 @@
+import React from 'react';
 import userImage from '../assets/images/user.png';
+import homeImage from '../assets/images/home.png';
+import '../style/Home/leftmenu.scss';
+import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../API_URL';
 
 function LeftMenu() {
-  const container={
-    width: '15%',
-    height: '100vh',
-  }
-  const homeButton={
-    borderColor: 'transparent',
-    width: '100%',
-    height: '7%',
-    fontSize: 35,
-  }
-  const teamContainer: React.CSSProperties = {
-    backgroundColor: 'lightgray',
-    height: '93%',
-    textAlign: 'center',
-  }
-  const teamNameNum={
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '10%',
-    height: '10%',
-    fontSize: 22,
-    paddingTop: '15%',
-  }
-  const teamName={
-    fontWeight: '700',
-  }
-  const teamNum={}
-  const userStyle={
-    width: 20,
-    height: 20,
-    paddingRight: 10,
-  }
-  const teamMates={
+  const navigate = useNavigate();
 
-  }
+  // 빙고이름, 팀명, 팀원 수, 팀원 이름 불러오는 함수 작성 필요
 
   return (
-    <div style={container}>
-      <button style={homeButton}>Bingle</button>
-      <div style={teamContainer}>
-        <div style={teamNameNum}>
-          <h1 style={teamName}>팀명
+    <div className="leftMenu-container">
+      <button className="homeButton" onClick={() => navigate("/")}>
+        <img src={homeImage} alt="home button" className="homeStyle" />
+        Bingle
+      </button>
+      <div className="teamContainer">
+        <div id="bingoName">빙고이름</div>
+        <div className="horizontalLine"></div>
+        <div className="teamNameNum">
+          <h1 id="teamName">팀명
             {/* 팀명 fetch */}
           </h1>
-          <h1 style={teamNum}>
-            <img src={userImage} alt="User Image" style={userStyle} />
+          <h1 id="teamNum">
+            <img src={userImage} alt="User" className="userStyle" />
             4
             {/* 숫자 fetch */}
           </h1>
         </div>
-        <div style={teamMates}>
+        <div id="teamMates">
           {/* 팀원 fetch */}
           {/* iterate 하면서 h3 태그로 가져오기 -> 공통 스타일 적용 */}
           <h3>김나나</h3>
@@ -62,8 +40,6 @@ function LeftMenu() {
       </div>
     </div>
   );
-
 }
 
 export default LeftMenu;
-
