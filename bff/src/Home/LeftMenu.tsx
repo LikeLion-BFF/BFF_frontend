@@ -16,14 +16,14 @@ function LeftMenu() {
         <img src={homeImage} alt="home button" className="homeStyle" />
         Bingle
       </button>
-      <div className="teamContainer">
-        <div id="bingoName">빙고이름</div>
+      <div className="home-teamContainer">
+        <div id="home-bingoName">빙고이름</div>
         <div className="horizontalLine"></div>
         <div className="teamNameNum">
           <h1 id="teamName">팀명
             {/* 팀명 fetch */}
           </h1>
-          <h1 id="teamNum">
+          <h1 id="home-teamNum">
             <img src={userImage} alt="User" className="userStyle" />
             4
             {/* 숫자 fetch */}

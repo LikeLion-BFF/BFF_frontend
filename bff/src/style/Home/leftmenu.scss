@@ -12,6 +12,7 @@
   font-size: 35px;
   background-color: #fff;
   margin: 2vh;
+  margin-bottom: 0;
   box-shadow: 5px 5px 0 rgba(254, 114, 16, 0.25);
   border-radius: 10px;
   text-align: left;
@@ -25,15 +26,16 @@
   margin-top: 10px;
 }
 
-#bingoName {
+#home-bingoName {
   font-size: 3.5vh;
-  margin: 3vh;
   font-weight: 600;
   width: inherit;
-  padding-left: 3vh;
+  text-align: center;
+  margin: 2vh 0 2vh 0;
+  padding-top: 2vh;
 }
 
-.teamContainer {
+.home-teamContainer {
   height: 86vh;
   width: 100%;
   flex-direction: column;
@@ -57,7 +59,7 @@
   font-weight: 500;
 }
 
-#teamNum {
+#home-teamNum {
   background-color: transparent;
 }
 

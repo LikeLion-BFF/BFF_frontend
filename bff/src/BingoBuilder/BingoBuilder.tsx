@@ -5,6 +5,8 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { useNavigate } from 'react-router-dom';
+import homeImage from '../assets/images/home.png';
 // import TextField from '@mui/material/TextField';
 import { Dayjs } from 'dayjs';
 
@@ -14,6 +16,8 @@ function BingoBuilder() {
   const [datePicked, setDatePicked] = useState<Date | null>(null);
   const [teamInput, setTeamInput] = useState<number>(0);
   const [goalInput, setGoalInput] = useState<number>(0);
+
+  const navigate = useNavigate();
 
   // Handle textarea change
   const handleBingoNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +90,15 @@ function BingoBuilder() {
   return (
     <div className="container">
       <div className="recommend">
+        <button className="builder-homeButton" onClick={() => {
+          if (window.confirm("만들어진 빙고판은 저장되지 않습니다. 계속하시겠습니까?")) {
+            navigate("/");
+          }
+        }}>
+          <img src={homeImage} alt="home button" className="builder-homeStyle" />
+          Bingle
+        </button>
+        <div className="horizontalLine"></div>
         <p className="bingoName">{bingoName}</p>
         <div className="horizontalLine"></div>
         <div className="recommendList">
@@ -141,7 +154,7 @@ function BingoBuilder() {
             </DemoContainer>
           </LocalizationProvider>
           <p className="title">참여팀 수</p>
-          <div className="teamContainer">
+          <div id="teamContainer">
             <input
               type="number"
               name="teamNum"

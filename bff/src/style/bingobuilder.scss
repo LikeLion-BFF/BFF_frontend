@@ -1,7 +1,6 @@
 .reloadImage {
   width: 20px;
   height: 20px;
-  padding-left: 2px;
 }
 
 .horizontalLine {
@@ -33,6 +32,24 @@
     background-color: hsl(183, 61%, 77%);
   }
 }
+//----------------------------
+// home button style
+.builder-homeStyle {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+.builder-homeButton {
+  border-color: transparent;
+  background-color: transparent;
+  width: 100%;
+  height: 8%;
+  font-size: 35px;
+  padding: 1vh 0 1vh 2vh;
+  text-align: left;
+}
+
 
 //----------------------------
 
@@ -213,12 +230,12 @@ input[type="number"] {
   }
 }
 
-.goalContainer, .teamContainer {
+.goalContainer, #teamContainer {
   display: flex;
   align-items: center;
 }
 
-.teamNum, .goal {
+#teamNum, #goal {
   resize: none;
   font-size: 2vh;
   border-radius: 5px;
@@ -228,7 +245,7 @@ input[type="number"] {
   font-weight: bold;
   line-height: 2.5vh;
   padding: 5px 0 0 5px;
-  background-color: hsl(183, 61%, 77%);
+  background-color: hsla(183, 61%, 80%, 0.68);
   border: none;
 }
 

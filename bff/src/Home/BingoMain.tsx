@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../style/Home/bingomain.scss';
 import downloadIcon from '../assets/images/download.png';
 import html2canvas from 'html2canvas';
@@ -13,6 +13,29 @@ const BingoMain: React.FC = () => {
   const [comment, setComment] = useState('');
   const [isCompleteButtonEnabled, setIsCompleteButtonEnabled] = useState(false);
 
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        handleModalCloseAttempt();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [modalRef]);
+
+  const handleModalCloseAttempt = () => {
+    const isConfirmed = window.confirm('작성한 내용은 저장되지 않습니다.');
+    if (isConfirmed) {
+      handleCloseModal();
+    }
+  };
+
   const handleCellClick = (index: number) => {
     setSelectedCell(index);
     setShowModal(true);
@@ -21,7 +44,7 @@ const BingoMain: React.FC = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setUploadedImage(null);
+    // setUploadedImage(null);
   };
 
   const handleLikeClick = () => {
@@ -123,14 +146,14 @@ const BingoMain: React.FC = () => {
       </div>
 
       {showModal && selectedCell !== null && (
-        <div className="modal-overlay">
+        <div className="modal-overlay" ref={modalRef}>
           <div className="modal">
             <div className="modal-header">
               <h3 style={{ textAlign: 'center', fontSize: '20px', marginTop: '10px', fontWeight:'bold', marginBottom: '10px'}}>인증샷 업로드</h3>
               <p style={{ fontSize: '14px', textAlign: 'center', marginTop: '5px' }}>
                 빙고칸 내용: {`칸 내용 ${selectedCell + 1}`}
               </p>
-              <button className="close-button" onClick={handleCloseModal}>✕</button>
+              <button className="close-button" onClick={handleModalCloseAttempt}>✕</button>
             </div>
             <div className="modal-content">
               <div className="image-placeholder">
