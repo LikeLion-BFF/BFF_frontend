@@ -34,20 +34,19 @@
 }
 //----------------------------
 // home button style
-.builder-homeStyle {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
-  margin-top: 10px;
-}
+
 .builder-homeButton {
   border-color: transparent;
   background-color: transparent;
   width: 100%;
   height: 8%;
-  font-size: 35px;
-  padding: 1vh 0 1vh 2vh;
-  text-align: left;
+  overflow: hidden;
+}
+.builder-logo {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin-left: 4%;
 }
 
 
@@ -124,6 +123,7 @@ input[type="number"] {
 
 .bingo {
   width: 66vw;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -146,7 +146,49 @@ input[type="number"] {
   font-weight: bold;
 }
 
-.bingoFrame {}
+// bingoBoard
+.bingoFrame {
+  background-color: #fe7310;
+  width: 70%;
+  height: 70%;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  padding: 2vh;
+}
+
+.bingoFrame .bingoBoard {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.bingoBoard .bingoCell {
+  // position: relative;
+  // width: 100%;
+  // padding-top: 100%;
+  // background-color: gray;
+  background-color: #FFE195;
+  border-radius: 10px;
+  width: 95%;
+  height: 50%;
+  margin: 0 0 1vh 0;
+  border: none;
+  text-align: center;
+  font-size: 2vh;
+}
+
+.bingoBoard .bingoCell:first-child {
+  margin-top: 1vh;
+}
+
+.bingoBoard .bingoCell:focus {
+  outline: none;
+}
+
 
 // -----------------------
 

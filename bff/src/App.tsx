@@ -5,6 +5,7 @@ import StartingPage from './StartingPage/StartingPage';
 // import Invite from './Invite/Invite';
 import BingoBuilder from './BingoBuilder/BingoBuilder';
 import { Route, Routes } from 'react-router-dom';
+import Invite from './Invite/Invite';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
       ) : (
         <>
           <Route path="/" element={<StartingPage />} />
+          <Route path="/invite" element={<Invite />} />
           {/* <Route path="/home/:bingoId" element={<Home />} /> */}
           <Route path="/home" element={<Home />} />
           {/* 빙고 선택하면 빙고 id로 이동 */}

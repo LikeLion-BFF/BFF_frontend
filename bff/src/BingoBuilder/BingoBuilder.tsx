@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../style/bingobuilder.scss';
 import reload from '../assets/images/reload.png';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -6,9 +6,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useNavigate } from 'react-router-dom';
-import homeImage from '../assets/images/home.png';
-// import TextField from '@mui/material/TextField';
+import shortLogo from '../assets/images/short_logo.png';
 import { Dayjs } from 'dayjs';
+import { API_URL } from '../API_URL';
 
 function BingoBuilder() {
   const [bingoName, setBingoName] = useState<string>('');
@@ -16,22 +16,23 @@ function BingoBuilder() {
   const [datePicked, setDatePicked] = useState<Date | null>(null);
   const [teamInput, setTeamInput] = useState<number>(0);
   const [goalInput, setGoalInput] = useState<number>(0);
+  const [bingoBoard, setBingoBoard] = useState<string[][]>([]);
 
   const navigate = useNavigate();
 
-  // Handle textarea change
+  // 빙고 이름 설정 함수
   const handleBingoNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBingoName(event.target.value);
     console.log(`bingoName: ${bingoName}`);
   };
 
-  // Handle size button selection
+  // 사이즈 설정 버튼 함수
   const handleSizeSelect = (size: number) => {
     setSelectedSize(size);
     console.log(`bingo size: ${size}`);
   };
 
-  // Handle date change
+  // 날짜 설정 함수
   const handleDateChange = (newValue: Dayjs | null) => {
     if (newValue) {
       setDatePicked(newValue.toDate()); // Convert Dayjs object to Date
@@ -42,36 +43,83 @@ function BingoBuilder() {
     }
   };
 
-  // Handle team input change
+  // 팀 갯수 설정 함수
   const handleTeamInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const teamNumber = Number(event.target.value);
     setTeamInput(teamNumber);
     console.log(`team number: ${teamNumber}`);
   };
 
-  // Handle goal input change
+  // 목표 설정 함수
   const handleGoalInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const goalNumber = Number(event.target.value);
     setGoalInput(goalNumber);
     console.log(`bingo goal: ${goalNumber}`);
   };
 
-  // Function to send data to the server
+  // 빙고판 만들기
+  useEffect(() => {
+    if (selectedSize) {
+      const initialBoard = Array.from({ length: selectedSize }, () =>
+        Array.from({ length: selectedSize }, () => '')
+      );
+      setBingoBoard(initialBoard);
+    }
+  }, [selectedSize]);
+
+  // 빙고 cell 내용 설정 함수
+  const handleBingoInputChange = (row: number, col: number, value: string) => {
+    const updateBoard = bingoBoard.map((r, rowIndex) =>
+      rowIndex === row ? r.map((c, colIndex) => (colIndex === col ? value : c)) : r
+    );
+    setBingoBoard(updateBoard);
+  };
+
+  // 빙고 만들기
+  const renderBingoBoard = () => {
+    return bingoBoard.map((row, rowIndex) => (
+      <div key={rowIndex} className="bingoBoard">
+        {row.map((cell, colIndex) => (
+          <input
+            key={`${rowIndex}-${colIndex}`}
+            type="text"
+            value={cell}
+            onChange={(event) => handleBingoInputChange(rowIndex, colIndex, event.target.value)}
+            className="bingoCell"
+          />
+        ))}
+      </div>
+    ));
+  }
+
+  // 빙고 데이터 전송
   const sendDataToServer = async () => {
+    if (!bingoName || selectedSize === null || !datePicked || teamInput <= 0 || goalInput <= 0) {
+      window.alert('모든 입력칸을 채워주세요.');
+      return;
+    }
+
+    const flattenedContent = bingoBoard.flat().map(String);
+
+    const formattedDatePicked = datePicked ? datePicked.toISOString() : null;
+
     const data = {
-      size: selectedSize,
-      date: datePicked,
-      team: teamInput,
-      goal: goalInput,
       title: bingoName,
+      size: selectedSize,
+      teams: teamInput,
+      goal: goalInput,
+      end_date: formattedDatePicked,
+      content: flattenedContent,
     };
 
     console.log(data);
 
     try {
-      const response = await fetch('YOUR_API_ENDPOINT', {
+      const response = await fetch(`${API_URL}/bingo/create/`, {
         method: 'POST',
         headers: {
+          'Key' : 'Authorization',
+          'Value' : `${localStorage.getItem('userToken')}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
@@ -82,6 +130,14 @@ function BingoBuilder() {
       }
 
       console.log('Data successfully sent to the server');
+      const responseData = await response.json();
+      console.log('초대코드:', responseData);
+      
+      // 초대코드 저장
+      localStorage.setItem('inviteCode', responseData);
+      
+      window.confirm(`빙고 초대코드는 ${responseData} 입니다.`)
+      navigate("/invite");
     } catch (error) {
       console.error('Error:', error);
     }
@@ -95,8 +151,7 @@ function BingoBuilder() {
             navigate("/");
           }
         }}>
-          <img src={homeImage} alt="home button" className="builder-homeStyle" />
-          Bingle
+          <img src={shortLogo} alt="home button" className="builder-logo" />
         </button>
         <div className="horizontalLine"></div>
         <p className="bingoName">{bingoName}</p>
@@ -124,7 +179,9 @@ function BingoBuilder() {
           value={bingoName}
           onChange={handleBingoNameChange}
         />
-        <div className="bingoFrame"></div>
+        <div className="bingoFrame">
+          {renderBingoBoard()}
+        </div>
         <p className="desc">* 빙고판 안을 클릭하여 내용을 채워보세요</p>
       </div>
       <div className="settings">

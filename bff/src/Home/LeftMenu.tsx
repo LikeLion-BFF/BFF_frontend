@@ -1,9 +1,9 @@
-import React from 'react';
+// import React from 'react';
 import userImage from '../assets/images/user.png';
 import homeImage from '../assets/images/home.png';
 import '../style/Home/leftmenu.scss';
 import { useNavigate } from 'react-router-dom';
-import { API_URL } from '../API_URL';
+// import { API_URL } from '../API_URL';
 
 function LeftMenu() {
   const navigate = useNavigate();
