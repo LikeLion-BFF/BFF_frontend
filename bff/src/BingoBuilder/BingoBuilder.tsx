@@ -127,8 +127,7 @@ function BingoBuilder() {
         method: 'POST',
         headers: {
           'Key' : 'Authorization',
-          'Value' : `${localStorage.getItem('userToken')}`,
-          'Content-Type': 'application/json',
+          'Value' : `Bearer ${localStorage.getItem('userToken')}`,
         },
         body: JSON.stringify(data),
       });
