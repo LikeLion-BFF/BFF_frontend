@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import shortLogo from '../assets/images/short_logo.png';
 import { Dayjs } from 'dayjs';
 import { API_URL } from '../API_URL';
+import axios from 'axios';
 
 function BingoBuilder() {
   const [bingoName, setBingoName] = useState<string>('');
@@ -20,6 +21,7 @@ function BingoBuilder() {
   const [bingoBoard, setBingoBoard] = useState<string[][]>([]);
   const [inviteCode, setInviteCode] = useState<string>(''); 
   const [showPopup, setShowPopup] = useState<boolean>(false); 
+  const [recommendItems, setRecommendItems] = useState<string[]>([]);
 
   const navigate = useNavigate();
 
@@ -65,6 +67,34 @@ function BingoBuilder() {
     setGoalInput(goalNumber);
     console.log(`bingo goal: ${goalNumber}`);
   };
+
+  // 추천 내용
+  const fetchRecommendItems = async () => {
+    try {
+      const response = await axios.post(`${API_URL}/contentAPI/recommend/`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+        },
+      });
+  
+      if (response.status !== 200) {
+        throw new Error('Network response was not ok');
+      }
+      const data = response.data;
+      console.log('recommend response data: ', data);
+
+      // 수신한 데이터 ':' 기준 파싱해서 왼쪽만 recommendItem에 넣음
+      const recommendItem = data.missions.map((mission:string) => mission.split(':')[0]);
+      setRecommendItems(recommendItem);
+    } catch (error) {
+      console.error('Error fetching recommend item: ', error);
+    }
+  };
+
+  // 화면 로드하고 1번 호출
+  useEffect(() => {
+    fetchRecommendItems().catch(console.error);
+  }, []);
 
   // 빙고판 만들기
   useEffect(() => {
@@ -174,12 +204,14 @@ function BingoBuilder() {
         <div className="recommendList">
           <div className="refreshBanner">
             <label htmlFor="refresh" className="refreshLabel">빙고 내용 추천</label>
-            <button name="refresh" className="refreshButton">
+            <button name="refresh" className="refreshButton" onClick={fetchRecommendItems}>
               <img src={reload} alt="reload" className="reloadImage" />
             </button>
           </div>
           <div className="recommendItems">
-            {/* 추천 내용 리스트 아이템 */}
+            {recommendItems.map((item, index) => (
+              <p key={index} className="recommendItem">{item}</p>
+            ))}
           </div>
         </div>
       </div>
@@ -197,7 +229,7 @@ function BingoBuilder() {
         <div className="bingoFrame">
           {renderBingoBoard()}
         </div>
-        <p className="desc">* 빙고판 안을 클릭하여 내용을 채워보세요</p>
+        <p className="builder-desc">* 빙고판 안을 클릭하여 내용을 채워보세요</p>
       </div>
       <div className="settings">
         <div className="settingItems">

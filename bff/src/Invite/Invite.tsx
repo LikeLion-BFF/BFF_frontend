@@ -63,6 +63,10 @@ function Invite() {
           },
         });
   
+        if (response.status !== 200) {
+          throw new Error('Network response was not ok');
+        }
+
         console.log('response data: ', response.data);
         setTeamCount(response.data.teams.length);
       } catch (error) {

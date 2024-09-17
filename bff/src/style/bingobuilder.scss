@@ -49,7 +49,6 @@
   margin-left: 4%;
 }
 
-
 //----------------------------
 
 * {
@@ -95,6 +94,16 @@ input[type="number"] {
   height: 3.5vh;
 }
 .recommendList {}
+.recommendItems {
+  overflow-y: auto;
+  max-height: 75vh;
+  border: 1px solid black;
+}
+.recommendItem {
+  font-size: 2vh;
+  background-color: #FFE195;
+  box-shadow: inset 1px 1px 3px gray;
+}
 .refreshBanner {
   display: flex;
   align-items: center;
@@ -192,6 +201,11 @@ input[type="number"] {
   outline: none;
 }
 
+.builder-desc {
+  font-size: 2vh;
+  color: rgb(79, 79, 79);
+  margin-top: 2vh;
+}
 
 // -----------------------
 
