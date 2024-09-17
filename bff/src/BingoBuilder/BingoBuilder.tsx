@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import InvitePopup from '../Invite/InvitePopup'; 
 import '../style/bingobuilder.scss';
 import reload from '../assets/images/reload.png';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -17,8 +18,16 @@ function BingoBuilder() {
   const [teamInput, setTeamInput] = useState<number>(0);
   const [goalInput, setGoalInput] = useState<number>(0);
   const [bingoBoard, setBingoBoard] = useState<string[][]>([]);
+  const [inviteCode, setInviteCode] = useState<string>(''); 
+  const [showPopup, setShowPopup] = useState<boolean>(false); 
 
   const navigate = useNavigate();
+
+  // 팝업 닫기 함수
+  const handlePopupClose = () => {
+    setShowPopup(false);
+    navigate('/home'); // 팝업 닫고 홈으로 이동
+  };
 
   // 빙고 이름 설정 함수
   const handleBingoNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +44,7 @@ function BingoBuilder() {
   // 날짜 설정 함수
   const handleDateChange = (newValue: Dayjs | null) => {
     if (newValue) {
-      setDatePicked(newValue.toDate()); // Convert Dayjs object to Date
+      setDatePicked(newValue.toDate());
       console.log(`finish date: ${newValue.toDate()}`);
     } else {
       setDatePicked(null);
@@ -90,7 +99,7 @@ function BingoBuilder() {
         ))}
       </div>
     ));
-  }
+  };
 
   // 빙고 데이터 전송
   const sendDataToServer = async () => {
@@ -100,7 +109,6 @@ function BingoBuilder() {
     }
 
     const flattenedContent = bingoBoard.flat().map(String);
-
     const formattedDatePicked = datePicked ? datePicked.toISOString() : null;
 
     const data = {
@@ -132,12 +140,10 @@ function BingoBuilder() {
       console.log('Data successfully sent to the server');
       const responseData = await response.json();
       console.log('초대코드:', responseData);
-      
-      // 초대코드 저장
-      localStorage.setItem('inviteCode', responseData);
-      
-      window.confirm(`빙고 초대코드는 ${responseData} 입니다.`)
-      navigate("/invite");
+
+      // 초대코드 저장 후 팝업 띄우기
+      setInviteCode(responseData);
+      setShowPopup(true);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -145,6 +151,10 @@ function BingoBuilder() {
 
   return (
     <div className="container">
+      {/* 팝업 컴포넌트 */}
+      {showPopup && <InvitePopup inviteCode={inviteCode} onClose={handlePopupClose} />}
+
+      {/* 빙고판 설정 및 입력 */}
       <div className="recommend">
         <button className="builder-homeButton" onClick={() => {
           if (window.confirm("만들어진 빙고판은 저장되지 않습니다. 계속하시겠습니까?")) {

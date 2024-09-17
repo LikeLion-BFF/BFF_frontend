@@ -7,6 +7,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import Invite from './Invite/Invite';
 import KakaoCallback from './Login/KakaoCallback';  // 카카오 콜백 컴포넌트 추가
 import NaverCallback from './Login/NaverCallback';  // 네이버 콜백 컴포넌트 추가
+import BingoMain from './Home/BingoMain';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -53,6 +54,7 @@ function App() {
           <Route path="/invite" element={<Invite />} />
           <Route path="/home" element={<Home />} />
           <Route path="/bingobuilder" element={<BingoBuilder />} />
+          <Route path="/home/BingoMain" element={<BingoMain />} />
         </>
       )}
       

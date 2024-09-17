@@ -1,0 +1,97 @@
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.popup {
+  background-color: #fff;
+  padding: 30px 30px; 
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 10px; 
+  max-width: 480px; 
+  min-height: 500px; 
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; 
+  }
+
+
+.popup h2 {
+  color: #FF6B01;
+  font-size: 23px; 
+  font-weight: bold; 
+  margin-top: -20px;
+  margin-bottom: 30px; 
+  text-align: center; 
+}
+
+.popup p {
+  color: #333;
+  font-size: 17px;
+  text-align: center; 
+  margin-bottom: 60px; 
+  line-height: 1.5;
+}
+
+.invite-code {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin-bottom: 75px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 18px;
+  width: 100%; 
+  max-width: 300px; 
+  box-sizing: border-box; 
+}
+
+.invite-code input {
+  border: none;
+  background: none;
+  font-size: 20px; 
+  font-weight: bold;
+  text-align: center;
+}
+
+.copy-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 10px;
+}
+
+.copy-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+}
+
+.popup-close-button {
+  background-color: #0D9CA4;
+  color: white;
+  padding: 15px 30px; 
+  border: none;
+  border-radius: 8px;
+  font-size: 20px; 
+  cursor: pointer;
+  width: 50%; 
+  transition: background-color 0.3s ease; 
+}
+
+.popup-close-button:hover {
+  background-color: #0056b3;
+}

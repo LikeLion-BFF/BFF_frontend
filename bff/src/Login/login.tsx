@@ -1,5 +1,6 @@
 // import React from 'react';
 import '../style/login.scss';
+import shortLogo from '../assets/images/short_logo.png';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 import { useEffect } from 'react';
@@ -137,12 +138,15 @@ function Login() {
 
   return (
     <div className="container">
+      <div className="logo-container">
+        <img src={shortLogo} alt="Bingle Logo" className="logo" />
+      </div>
       <div className="login-container">
         <h1 className="login">간편로그인</h1>
         <p className="desc">소셜 로그인 인증을 통해 간편하게 서비스를 이용할 수 있어요</p>
         <div className="login-buttons">
           {/* 카카오 로그인 버튼에 클릭 이벤트 연결 */}
-          <h1 id="kakao" onClick={handleKakaoLogin}>카카오</h1>
+          <h1 id="kakao" onClick={handleKakaoLogin}>카카오로 시작하기</h1>
 
           {/* 네이버 로그인 버튼 추가 */}
           <div id="naverIdLogin" className="button" onClick={handleNaverLogin}></div>
