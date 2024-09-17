@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/startingpage.scss';
 import axios from 'axios';
+import longLogo from '../assets/images/long_logo.png'
+import { API_URL } from '../API_URL';
 
 function StartingPage() {
   const navigate = useNavigate();
   const [bingoBoards, setBingoBoards] = useState([]);
 
+  const handleInviteCode = () => {
+    
+  };
 
   // 빙고판 선택시 이동 위해
   const handleBingoClick = (bingoId) => {
@@ -20,9 +25,10 @@ function StartingPage() {
         const userToken = localStorage.getItem('userToken');
         
         // axios 요청에 Authorization 헤더 추가
-        const response = await axios.get('YOUR_SERVER_ENDPOINT', {
+        const response = await axios.get(`${API_URL}//bingo/list/`, {
           headers: {
-            Authorization: `Bearer ${userToken}` // Bearer 스키마 사용, 필요에 따라 수정
+            "Key" : "Authorization",
+            "Value": `Bearer ${userToken}`
           }
         });
         
@@ -35,17 +41,21 @@ function StartingPage() {
   }, []);
 
   return (
-    <div className="container">
-      <div className="mainContainer">
+    <div className="start-container">
+      <div className="start-mainContainer">
         <div className="banner">
-          <h1 className="logo">Bingle</h1>
-          <button className="newButton" onClick={() => navigate('/bingobuilder')}>빙고 생성</button>
+          <img src={longLogo} alt="long style Bingle logo" className="start-logo" />
+          <div className="start-buttons">
+            <input type="text" className="inviteCode" placeholder='참여코드를 입력해주세요'/>
+            <button name="inviteCode" onClick={() => handleInviteCode} className="inviteSubmit">참여하기</button>
+            <button className="newButton" onClick={() => navigate('/bingobuilder')}>빙고 생성</button>
+          </div>
           {/* 이동 navigation 추가 필요 */}
         </div>
-        <div className="bingoContainer">
-          <div className="bingo">
-            <p className="bingoName">임시 빙고 이름</p>
-            <div className="bingoItem"></div>
+        <div className="start-bingoContainer">
+          <div className="start-bingo">
+            <p className="start-bingoName">임시 빙고 이름</p>
+            <div className="start-bingoItem"></div>
           </div>
         </div>
       </div>

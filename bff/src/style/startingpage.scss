@@ -1,40 +1,64 @@
-.container {
+.start-container {
   height: 100vh;
   width: 100vw;
+  background-color: #FFF9EA;
+  padding: 5vw;
 }
-.mainContainer {
-  padding: 7vh;
+.start-mainContainer {
+  // border: 1px solid green;
 }
 .banner {
   display: flex;
   justify-content: space-between;
-}
-
-.logo {
-  font-size: 5vh;
-  cursor: default;
-}
-
-.newButton {
-  border: none;
-  width: 10vw;
-  font-size: 2vh;
-  cursor: pointer;
-}
-
-.bingoContainer {
-  height: 85vh;
-  justify-content: center;
   align-items: center;
-
-  // 가로 스크롤 위한 세팅
-  display: flex;
-  overflow-x: auto;
-  white-space: nowrap;
   width: 100%;
 }
+.start-logo {
+  cursor: default;
+  width: 30%;
+}
+.start-buttons {
+  display: flex;
+}
+.inviteCode {
+  border-radius: 10px;
+  height: 5vh;
+  width: 20vh;
+  text-align: center;
+  font-size: 2vh;
+  margin-right: 1vh;
+  border: 1px solid black;
+}
+.inviteCode::placeholder {
+  font-size: 1.5vh;
+}
+.inviteSubmit {
+  background-color: #0D9CA4;
+  border: none;
+  width: 7vw;
+  border-radius: 10px;
+  font-size: 2vh;
+  cursor: pointer;
+  color: white;
+  margin-right: 2vh;
+}
+.newButton {
+  border: none;
+  width: 7vw;
+  font-size: 2vh;
+  cursor: pointer;
+  background-color: #0D9CA4;
+  border-radius: 10px;
+  color: white;
+}
 
-.bingo {
+.start-bingoContainer {
+  height: 50vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.start-bingo {
   background-color: lightgray;
   text-align: left;
   width: 25vw;
@@ -48,11 +72,11 @@
   flex: 0 0 auto; 
   margin-right: 10px;
 }
-.bingoName {
+.start-bingoName {
   font-size: 2.5vh;
   margin-bottom: 10vh;
 }
-.bingoItem {
+.start-bingoItem {
   width: 22vw;
   height: 40vh;
   background-color: gray;

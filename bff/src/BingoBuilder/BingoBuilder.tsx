@@ -133,10 +133,11 @@ function BingoBuilder() {
       const responseData = await response.json();
       console.log('초대코드:', responseData);
       
-      // 초대코드 저장
-      localStorage.setItem('inviteCode', responseData);
+      // 초대코드 session에 저장
+      localStorage.setItem(`inviteCode`, JSON.stringify(responseData.code));
       
-      window.confirm(`빙고 초대코드는 ${responseData} 입니다.`)
+      // 초대코드 복사 가능 팝업
+      window.confirm(`Bingle, 모두의 모임빙고\n${bingoName} 빙고판에 초대합니다!\n참여코드 ${responseData.code}\n${API_URL}`)
       navigate("/invite");
     } catch (error) {
       console.error('Error:', error);

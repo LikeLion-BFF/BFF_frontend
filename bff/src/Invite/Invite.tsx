@@ -3,6 +3,7 @@ import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import shortLogo from '../assets/images/short_logo.png'
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../API_URL';
 
 interface TeamCountResponse {
   count: number;
@@ -18,8 +19,15 @@ function Invite() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<TeamCountResponse>('YOUR_TEAMS_COUNT_ENDPOINT');
-        setTeamCount(response.data.count); // Assuming the response has a count property
+        const response = await fetch(`${API_URL}/bingo/join/`, {
+          method: 'POST',
+          headers: {
+            'Key' : 'Authorization',
+            'Value' : `Bearer ${localStorage.getItem('userToken')}`,
+          },
+        })
+        // const response = await axios.get<TeamCountResponse>('YOUR_TEAMS_COUNT_ENDPOINT');
+        // setTeamCount(response.data.count);
       } catch (error) {
         console.error('Error fetching team count:', error);
       }

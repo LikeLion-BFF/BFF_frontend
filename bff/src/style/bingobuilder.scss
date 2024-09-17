@@ -145,6 +145,9 @@ input[type="number"] {
   color: #FE7210;
   font-weight: bold;
 }
+.bingo input[type="text"]::placeholder {
+  color: rgba(254, 115, 16, 0.597);
+}
 
 // bingoBoard
 .bingoFrame {
