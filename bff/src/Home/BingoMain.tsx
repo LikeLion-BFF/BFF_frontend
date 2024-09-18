@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../style/Home/bingomain.scss';
 import downloadIcon from '../assets/images/download.png';
 import html2canvas from 'html2canvas';
+import axios from 'axios'; 
+import { API_URL } from '../API_URL';  
 
 const BingoMain: React.FC = () => {
-  const [bingoStatus, setBingoStatus] = useState<(string | null)[]>(Array(9).fill(null)); // 각 칸의 상태를 이미지 URL 또는 null로 저장
+  const [bingoStatus, setBingoStatus] = useState<(string | null)[]>(Array(9).fill(null)); 
   const [selectedCell, setSelectedCell] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
@@ -13,7 +15,31 @@ const BingoMain: React.FC = () => {
   const [comment, setComment] = useState('');
   const [isCompleteButtonEnabled, setIsCompleteButtonEnabled] = useState(false);
 
+  // 백엔드에서 제공받은 데이터들 (실제 bingo_id와 team_id는 API를 통해 받아와야 함)
+  const [bingoId, setBingoId] = useState<number | null>(null); 
+  const [teamId, setTeamId] = useState<number | null>(null); // 실제로 API에서 받아온 값을 저장
+
   const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // 백엔드로부터 bingo_id와 team_id 받아오기 위한 API 호출
+    const fetchBingoData = async () => {
+      try {
+        const userToken = localStorage.getItem('userToken');
+        const response = await axios.get(`${API_URL}/bingo/info`, {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+        setBingoId(response.data.bingo_id);  // 실제 데이터로 대체
+        setTeamId(response.data.team_id);    // 실제 데이터로 대체
+      } catch (error) {
+        console.error('빙고판 정보 불러오기 실패:', error);
+      }
+    };
+
+    fetchBingoData(); // 데이터 호출
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -44,7 +70,6 @@ const BingoMain: React.FC = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    // setUploadedImage(null);
   };
 
   const handleLikeClick = () => {
@@ -62,6 +87,11 @@ const BingoMain: React.FC = () => {
         console.log('이미지 로드 완료:', reader.result);  // 상태 변경 확인
         setUploadedImage(reader.result as string);
       };
+      reader.onerror = () => {
+        console.error('이미지 업로드 실패');
+        alert('이미지 업로드 중 오류가 발생했습니다. 다시 시도해주세요.');
+        setUploadedImage(null);  // 업로드 실패 시 이미지 초기화
+      };
       reader.readAsDataURL(file);
     }
   };
@@ -76,12 +106,38 @@ const BingoMain: React.FC = () => {
     }
   }, [uploadedImage]);
 
-  const handleCompleteClick = () => {
-    if (selectedCell !== null && uploadedImage) {
+  // 이미지 업로드 후 '완료' 버튼을 눌렀을 때 백엔드로 데이터를 전송하는 함수
+  const handleCompleteClick = async () => {
+    if (selectedCell !== null && uploadedImage && bingoId !== null && teamId !== null) {
       const updatedBingoStatus = [...bingoStatus];
       updatedBingoStatus[selectedCell] = uploadedImage; // 선택한 칸에 업로드한 이미지를 저장
       setBingoStatus(updatedBingoStatus);
-      handleCloseModal();
+
+      // 백엔드로 이미지 및 인증 정보 전달
+      try {
+        const userToken = localStorage.getItem('userToken');  // 토큰 가져오기
+        const response = await axios.post(
+          `${API_URL}/bingo/complete/cell/`,
+          {
+            bingo_id: bingoId,  // 실제 받아온 bingo_id
+            team_id: teamId,    // 실제 받아온 team_id
+            row: Math.floor(selectedCell / 3) + 1,  // 선택된 셀의 행 계산
+            col: (selectedCell % 3) + 1,            // 선택된 셀의 열 계산
+            completed_photo: uploadedImage,         // 업로드한 이미지 URL
+            completed_text: comment                 // 입력한 코멘트
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,  // 사용자 토큰 전달
+            }
+          }
+        );
+        console.log('인증 성공:', response.data);
+      } catch (error) {
+        console.error('인증 실패:', error);
+      }
+
+      handleCloseModal(); // 모달 닫기
     }
   };
 
@@ -188,7 +244,7 @@ const BingoMain: React.FC = () => {
                         borderRadius: '5px', 
                         cursor: isCompleteButtonEnabled ? 'pointer' : 'not-allowed'
                       }}
-                      onClick={handleCompleteClick}  // 완료 버튼 클릭 시 이미지 적용
+                      onClick={handleCompleteClick}  // 완료 버튼 클릭 시 이미지 적용 및 백엔드 연동
               >
                 완료
               </button>
