@@ -4,6 +4,7 @@ import downloadIcon from '../assets/images/download.png';
 import html2canvas from 'html2canvas';
 import axios from 'axios'; 
 import { API_URL } from '../API_URL';  
+import { useParams } from 'react-router-dom';  
 
 const BingoMain: React.FC = () => {
   const [bingoStatus, setBingoStatus] = useState<(string | null)[]>(Array(9).fill(null)); 
@@ -15,31 +16,10 @@ const BingoMain: React.FC = () => {
   const [comment, setComment] = useState('');
   const [isCompleteButtonEnabled, setIsCompleteButtonEnabled] = useState(false);
 
-  // 백엔드에서 제공받은 데이터들 (실제 bingo_id와 team_id는 API를 통해 받아와야 함)
-  const [bingoId, setBingoId] = useState<number | null>(null); 
-  const [teamId, setTeamId] = useState<number | null>(null); // 실제로 API에서 받아온 값을 저장
+  // URL 파라미터에서 bingoId와 teamId를 가져옴
+  const { bingoId, teamId } = useParams<{ bingoId: string; teamId: string }>();  
 
   const modalRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // 백엔드로부터 bingo_id와 team_id 받아오기 위한 API 호출
-    const fetchBingoData = async () => {
-      try {
-        const userToken = localStorage.getItem('userToken');
-        const response = await axios.get(`${API_URL}/bingo/info`, {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        });
-        setBingoId(response.data.bingo_id);  // 실제 데이터로 대체
-        setTeamId(response.data.team_id);    // 실제 데이터로 대체
-      } catch (error) {
-        console.error('빙고판 정보 불러오기 실패:', error);
-      }
-    };
-
-    fetchBingoData(); // 데이터 호출
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -108,7 +88,7 @@ const BingoMain: React.FC = () => {
 
   // 이미지 업로드 후 '완료' 버튼을 눌렀을 때 백엔드로 데이터를 전송하는 함수
   const handleCompleteClick = async () => {
-    if (selectedCell !== null && uploadedImage && bingoId !== null && teamId !== null) {
+    if (selectedCell !== null && uploadedImage && bingoId && teamId) {
       const updatedBingoStatus = [...bingoStatus];
       updatedBingoStatus[selectedCell] = uploadedImage; // 선택한 칸에 업로드한 이미지를 저장
       setBingoStatus(updatedBingoStatus);
@@ -119,8 +99,8 @@ const BingoMain: React.FC = () => {
         const response = await axios.post(
           `${API_URL}/bingo/complete/cell/`,
           {
-            bingo_id: bingoId,  // 실제 받아온 bingo_id
-            team_id: teamId,    // 실제 받아온 team_id
+            bingo_id: parseInt(bingoId),  // URL에서 받아온 bingo_id
+            team_id: parseInt(teamId),    // URL에서 받아온 team_id
             row: Math.floor(selectedCell / 3) + 1,  // 선택된 셀의 행 계산
             col: (selectedCell % 3) + 1,            // 선택된 셀의 열 계산
             completed_photo: uploadedImage,         // 업로드한 이미지 URL
@@ -234,26 +214,26 @@ const BingoMain: React.FC = () => {
                 onChange={handleCommentChange} 
                 placeholder="한줄멘트를 입력하세요 (0/17자)"
                 style={{ width: '100%', height: '25px', fontSize: '15px', marginBottom: '20px' }}
-              />
-              <button className="submit-button" 
-                      disabled={!isCompleteButtonEnabled}
-                      style={{ 
-                        fontSize: '14px', 
-                        width: '70px', 
-                        height: '30px', 
-                        borderRadius: '5px', 
-                        cursor: isCompleteButtonEnabled ? 'pointer' : 'not-allowed'
-                      }}
-                      onClick={handleCompleteClick}  // 완료 버튼 클릭 시 이미지 적용 및 백엔드 연동
-              >
-                완료
-              </button>
+                />
+                <button className="submit-button" 
+                        disabled={!isCompleteButtonEnabled}
+                        style={{ 
+                          fontSize: '14px', 
+                          width: '70px', 
+                          height: '30px', 
+                          borderRadius: '5px', 
+                          cursor: isCompleteButtonEnabled ? 'pointer' : 'not-allowed'
+                        }}
+                        onClick={handleCompleteClick}  // 완료 버튼 클릭 시 이미지 적용 및 백엔드 연동
+                >
+                  완료
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default BingoMain;
+        )}
+      </div>
+    );
+  };
+  
+  export default BingoMain;
