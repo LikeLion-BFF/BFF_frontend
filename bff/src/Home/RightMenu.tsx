@@ -20,12 +20,14 @@ interface MyTeamInfo {
 function RightMenu() {
   const [myTeamInfo, setMyTeamInfo] = useState<MyTeamInfo>({team_name: '', completed_bingo_count: 0, completed_cell_count: 0});
   const [teamRanks, setTeamRanks] = useState<TeamRank[]>([]);
+  const [endDate, setEndDate] = useState<String>("");
 
   const { bingoId, teamId } = useParams();
 
   useEffect(() => {
     fetchMyTeam();
     fetchTeams();
+    fetchTime();
   }, []);
 
   async function fetchMyTeam() {
@@ -65,6 +67,29 @@ function RightMenu() {
       setTeamRanks(response.data);
     } catch (error) {
       console.error('Error fetching team ranks', error);
+    }
+  };
+
+  async function fetchTime() {
+    try {
+      const response = await axios.get(`${API_URL}/bingo/end_date/?bingo_id=${bingoId}`, {
+        headers: {
+          Key: 'Authorization',
+          Value: `Bearer ${localStorage.getItem('userToken')}`,
+        },
+      });
+
+      if (response.status !== 200) {
+        throw new Error('Network response was not ok');
+      };
+
+      const endDate = new Date(response.data.end_date);
+      const formattedDate = `${endDate.getFullYear()}.${(endDate.getMonth() + 1).toString().padStart(2, '0')}.${endDate.getDate().toString().padStart(2, '0')} ${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`;
+
+      console.log(`종료 시간 수신: ${formattedDate}`);
+      setEndDate(formattedDate);
+    } catch (error) {
+      console.error('Error fetching end date', error);
     }
   };
 
@@ -118,7 +143,7 @@ function RightMenu() {
         </div>
       </div>
       <div className="timeContainer">
-        <h4 className="time">~종료시간~</h4>
+        <h4 className="time">{endDate} 종료</h4>
       </div>
     </div>
   );
