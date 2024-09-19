@@ -85,7 +85,6 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import Invite from './Invite/Invite';
 import KakaoCallback from './Login/KakaoCallback';  
 import NaverCallback from './Login/NaverCallback';  
-import BingoMain from './Home/BingoMain';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -127,12 +126,10 @@ function App() {
         <Route path="/" element={<Login />} />
       ) : (
         <>
-          {/* BingoMain을 메인 경로로 임시 추가 */}
-          <Route path="/" element={<BingoMain />} />
           {/* 기존 경로들은 주석 처리 */}
-          {/* <Route path="/" element={<StartingPage />} /> */}
-          <Route path="/invite" element={<Invite />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<StartingPage />} />
+          <Route path="/invite/:inviteCode" element={<Invite />} />
+          <Route path="/home/:bingoId/:teamId" element={<Home />} />
           <Route path="/bingobuilder" element={<BingoBuilder />} />
           {/* <Route path="/home/BingoMain" element={<BingoMain />} /> */}
         </>

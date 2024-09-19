@@ -2,10 +2,11 @@
   height: 100vh;
   width: 100vw;
   background-color: #FFF9EA;
-  padding: 5vw;
+  margin: 0;
 }
 .start-mainContainer {
   // border: 1px solid green;
+  padding: 5vw;
 }
 .banner {
   display: flex;
@@ -19,6 +20,8 @@
 }
 .start-buttons {
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .inviteCode {
   border-radius: 10px;
@@ -33,14 +36,15 @@
   font-size: 1.5vh;
 }
 .inviteSubmit {
-  background-color: #0D9CA4;
+  margin-right: 2vh;
   border: none;
   width: 7vw;
-  border-radius: 10px;
   font-size: 2vh;
   cursor: pointer;
+  background-color: #0D9CA4;
+  border-radius: 10px;
   color: white;
-  margin-right: 2vh;
+  height: 3vw;
 }
 .newButton {
   border: none;
@@ -50,6 +54,7 @@
   background-color: #0D9CA4;
   border-radius: 10px;
   color: white;
+  height: 3vw;
 }
 
 .start-bingoContainer {

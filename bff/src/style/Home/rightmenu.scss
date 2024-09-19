@@ -1,0 +1,107 @@
+.container {
+  width: 15vw;
+  height: 100vh;
+}
+
+.rankBanner {
+  display: flex;
+  align-items: center;
+  height: 7%;
+}
+
+.rankText {
+  border-color: transparent;
+  font-size: 22;
+  font-weight: 300;
+}
+
+.rewardStyle {
+  width: 1.5vw;
+  height: 1.5vw;
+  padding: 1vw;
+}
+
+.rankContainer {
+  background-color: lightgray;
+  height: 89vh;
+}
+
+.myTeam {
+  padding: 8%;
+}
+
+.myTeamRank {
+  font-weight: 700;
+  font-size: 22;
+  padding-top: 5%;
+  padding-bottom: 10%;
+}
+
+.myTeamMedal {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4%;
+}
+
+.medal {
+  background-color: gray;
+  width: 30;
+  height: 30;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5%;
+}
+
+.medalNum {
+  color: white;
+  font-size: 22;
+}
+
+.teamName {
+  font-size: 22;
+  font-weight: 700;
+}
+
+.teamStats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5%;
+}
+
+// .teamBingos {}
+// .teamPercent {}
+
+.teamBar {
+  position: absolute;
+  background-color: black;
+  width: 13vw;
+  height: 2.5vh;
+}
+
+.teamStatBar {
+  position: relative;
+  left: 0;
+  top: 0;
+  background-color: gray;
+  height: 2.5vh;
+}
+
+.line {
+  width: 100%;
+  height: 0.1vh;
+  background-color: gray;
+  margin-top: 2vh;
+  margin-bottom: 1.5vw;
+}
+
+.allTeamsContainer {
+  padding-left: 1vw;
+}
+
+.allTeamText {
+  font-size: 22;
+  font-weight: 700;
+}

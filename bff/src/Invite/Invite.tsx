@@ -2,65 +2,30 @@ import '../style/invite.scss'
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import shortLogo from '../assets/images/short_logo.png'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { API_URL } from '../API_URL';
-
-// interface TeamCountResponse {
-//   count: number;
-// }
-
-const bingoId = sessionStorage.getItem('bingo_id') || '';
-const inviteCode = sessionStorage.getItem('inviteCode') || '';
 
 function Invite() {
   const [teamCount, setTeamCount] = useState<number>(0); // 팀 개수
+  const [bingoId, setBingoId] = useState<number | null>(null); // bingo_id 저장
   const [selectedTeam, setSelectedTeam] = useState<number | null>(null);
   const [name, setName] = useState<string>(''); // 이름 저장
 
   const navigate = useNavigate();
-
-  //! Axios 안 쓴 버전
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const data = {
-  //         bingo_id: bingoId,
-  //         code: inviteCode
-  //       }
-
-  //       const response = await fetch(`${API_URL}/bingo/join/`, {
-  //         method: 'POST',
-  //         headers: {
-  //           'Key' : 'Authorization',
-  //           'Value' : `Bearer ${localStorage.getItem('userToken')}`,
-  //         },
-  //         body: JSON.stringify(data),
-  //       })
-  //       if (!response.ok) {
-  //         throw new Error('Network response was not ok');
-  //       }
-  //       const responseData = await response.json();
-  //       console.log('response data: ', responseData);
-  //       setTeamCount(responseData.teams.length);
-  //     } catch (error) {
-  //       console.error('Error fetching team count:', error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
+  const inviteCode = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = {
-          bingo_id: bingoId,
-          code: inviteCode
-        };
   
-        const response = await axios.post(`${API_URL}/bingo/join/`, data, {
+        const response = await axios.post(`${API_URL}/bingo/join/`, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+            Key: 'Authorization',
+            Value: `Bearer ${localStorage.getItem('userToken')}`,
           },
+          body: {
+            "code": `${inviteCode}`
+          }
         });
   
         if (response.status !== 200) {
@@ -69,6 +34,7 @@ function Invite() {
 
         console.log('response data: ', response.data);
         setTeamCount(response.data.teams.length);
+        setBingoId(response.data.bingo_id);
       } catch (error) {
         console.error('Error fetching team count:', error);
       }
@@ -98,16 +64,17 @@ function Invite() {
   
       const response = await axios.post(`${API_URL}/bingo/join/team/`, data, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+          Key: 'Authorization',
+          Value: `Bearer ${localStorage.getItem('userToken')}`,
         },
       });
   
-      // 세션에 저장된 초대코드, 빙고 아이디 삭제
-      sessionStorage.removeItem('inviteCode');
-      sessionStorage.removeItem('bingo_id');
+      // // 세션에 저장된 초대코드, 빙고 아이디 삭제
+      // sessionStorage.removeItem('inviteCode');
+      // sessionStorage.removeItem('bingo_id');
   
       // responseData 출력
-      console.log('초대코드:', response.data);
+      console.log('빙고 참여 응답: ', response.data);
   
     } catch (error) {
       console.error('Error submitting data - Invite:', error);

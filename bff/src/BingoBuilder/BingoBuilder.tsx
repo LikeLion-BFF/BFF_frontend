@@ -28,7 +28,8 @@ function BingoBuilder() {
   // 팝업 닫기 함수
   const handlePopupClose = () => {
     setShowPopup(false);
-    navigate('/invite'); // 팝업 닫고 초대화면으로 이동
+    console.log('navigating to invite from inviteCode popup')
+    navigate(`/invite/${inviteCode}`); // 팝업 닫고 초대화면으로 이동
   };
 
   // 빙고 이름 설정 함수
@@ -73,7 +74,8 @@ function BingoBuilder() {
     try {
       const response = await axios.post(`${API_URL}/contentAPI/recommend/`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+          Key: 'Authorization',
+          Value: `Bearer ${localStorage.getItem('userToken')}`,
         },
       });
   
@@ -134,7 +136,7 @@ function BingoBuilder() {
   // 빙고 데이터 전송
   const sendDataToServer = async () => {
     if (!bingoName || selectedSize === null || !datePicked || teamInput <= 0 || goalInput <= 0) {
-      window.alert('모든 입력칸을 채워주세요.');
+      window.alert('모든 입력칸을 채워주세요!');
       return;
     }
 
@@ -169,15 +171,13 @@ function BingoBuilder() {
       console.log('Data successfully sent to the server');
       const responseData = await response.json();
       console.log('초대코드:', responseData);
-      
-      // 초대코드 session에 저장
-      sessionStorage.setItem(`inviteCode`, JSON.stringify(responseData.code));
-      
-      // bingo_id session에 저장
-      sessionStorage.setItem(`bingo_id`, JSON.stringify(responseData.bingo_id));
 
       // 초대코드 저장 후 팝업 띄우기
       setInviteCode(responseData.code);
+
+      // 초대코드 출력
+      console.log(inviteCode);
+
       setShowPopup(true);
     } catch (error) {
       console.error('Error:', error);
