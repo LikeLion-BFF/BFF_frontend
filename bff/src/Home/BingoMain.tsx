@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
 import '../style/Home/bingomain.scss';
 import downloadIcon from '../assets/images/download.png';
@@ -10,7 +11,7 @@ const BingoMain: React.FC = () => {
   const [bingoStatus, setBingoStatus] = useState<(string | null)[]>(Array(9).fill(null)); 
   const [selectedCell, setSelectedCell] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
+  // const [likeCount, setLikeCount] = useState(0);
   const [hasLiked, setHasLiked] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [comment, setComment] = useState('');
@@ -46,18 +47,19 @@ const BingoMain: React.FC = () => {
     setSelectedCell(index);
     setShowModal(true);
     setHasLiked(false);
+    console.log(hasLiked);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
-  const handleLikeClick = () => {
-    if (!hasLiked) {
-      setLikeCount(likeCount + 1);
-      setHasLiked(true);
-    }
-  };
+  // const handleLikeClick = () => {
+  //   if (!hasLiked) {
+  //     setLikeCount(likeCount + 1);
+  //     setHasLiked(true);
+  //   }
+  // };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

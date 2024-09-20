@@ -1,5 +1,4 @@
 // InvitePopup.tsx
-import React from 'react';
 import '../style/invitePopup.scss';
 import copyIcon from '../assets/images/copy.png'; // 복사 아이콘 이미지 경로
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // import React from 'react';
 import '../style/login.scss';
 import shortLogo from '../assets/images/short_logo.png';
@@ -14,41 +15,41 @@ function Login() {
   // 카카오 로그인 처리 함수
   const handleKakaoLogin = () => {
     Kakao.Auth.authorize({
-      redirectUri: 'http://localhost:5173/kakao-callback'  // 카카오 개발자 콘솔에 등록한 Redirect URI
+      redirectUri: `http://${API_URL}/kakao-callback`  // 카카오 개발자 콘솔에 등록한 Redirect URI
     });
   };
 
   // 카카오 로그인 콜백 처리 함수
-  const handleKakaoCallback = async () => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const code = queryParams.get('code');  // Authorization Code
+  // const handleKakaoCallback = async () => {
+  //   const queryParams = new URLSearchParams(window.location.search);
+  //   const code = queryParams.get('code');  // Authorization Code
 
-    if (code) {
-      try {
+  //   if (code) {
+  //     try {
 
-        // 1. 로그인 → 토큰 요청
-        const response = await axios.get(`${API_URL}/kakao/login/?code=${code}`);
-        const { access_token, refresh_token, user_created } = response.data;
+  //       // 1. 로그인 → 토큰 요청
+  //       const response = await axios.get(`${API_URL}/kakao/login/?code=${code}`);
+  //       const { access_token, refresh_token, user_created } = response.data;
 
-        // 2. access_token 저장
-        localStorage.setItem('access_token', access_token);
-        localStorage.setItem('refresh_token', refresh_token);
+  //       // 2. access_token 저장
+  //       localStorage.setItem('access_token', access_token);
+  //       localStorage.setItem('refresh_token', refresh_token);
 
-        console.log('카카오 로그인 성공:', response.data);
+  //       console.log('카카오 로그인 성공:', response.data);
 
-        // 3. 사용자 정보 요청
-        await fetchUserInfo(access_token);
+  //       // 3. 사용자 정보 요청
+  //       await fetchUserInfo(access_token);
 
-        // 4. 토큰 유효성 검증 요청
-        await verifyToken(access_token);
+  //       // 4. 토큰 유효성 검증 요청
+  //       await verifyToken(access_token);
 
-        // 5. 페이지 리디렉트
-        navigate('/dashboard');
-      } catch (error) {
-        console.error('카카오 로그인 오류:', error);
-      }
-    }
-  };
+  //       // 5. 페이지 리디렉트
+  //       navigate('/dashboard');
+  //     } catch (error) {
+  //       console.error('카카오 로그인 오류:', error);
+  //     }
+  //   }
+  // };
 
   // 네이버 로그인 버튼 초기화
   useEffect(() => {
@@ -87,6 +88,8 @@ function Login() {
         // 1. 로그인 → 토큰 요청
         const response = await axios.get(`${API_URL}/naver/login/?code=${code}&state=${state}`);
         const { access_token, refresh_token, user_created } = response.data;
+
+        console.log(`userCreated: ${user_created}`)
 
         // 2. access_token 저장
         localStorage.setItem('access_token', access_token);

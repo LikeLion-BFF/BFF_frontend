@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/startingpage.scss';
 import axios from 'axios';
@@ -48,7 +48,6 @@ function StartingPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userToken = localStorage.getItem('userToken');
         const response = await axios.get(`${API_URL}/bingo/list/`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
