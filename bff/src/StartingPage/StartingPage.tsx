@@ -55,6 +55,7 @@ function StartingPage() {
           }
         });
 
+        console.log(`response data for bingo board: ${response.data}`)
         setBingoBoards(response.data);
       } catch (error) {
         console.error('Error fetching BINGO data:', error);
