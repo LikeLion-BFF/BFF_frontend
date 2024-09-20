@@ -97,17 +97,30 @@ input[type="number"] {
 .recommendItems {
   overflow-y: auto;
   max-height: 75vh;
-  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 .recommendItem {
   font-size: 2vh;
   background-color: #FFE195;
-  box-shadow: inset 1px 1px 3px gray;
+  box-shadow: inset 2px 2px 2px #fe7310ea;
+  width: 80%;
+  height: 20vh;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1vh 0;
+  border-radius: 10px;
+  padding: 10%;
 }
 .refreshBanner {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: -1vh;
 }
 .refreshLabel {
   font-size: 2vh;
@@ -179,10 +192,6 @@ input[type="number"] {
 }
 
 .bingoBoard .bingoCell {
-  // position: relative;
-  // width: 100%;
-  // padding-top: 100%;
-  // background-color: gray;
   background-color: #FFE195;
   border-radius: 10px;
   width: 95%;
@@ -191,6 +200,11 @@ input[type="number"] {
   border: none;
   text-align: center;
   font-size: 2vh;
+  white-space: normal !important;
+  overflow-wrap: break-word !important;
+  overflow: visible;
+  resize: none;
+  padding-top: 7vh;
 }
 
 .bingoBoard .bingoCell:first-child {
@@ -335,4 +349,9 @@ input[type="number"] {
 
 .submit:focus {
   border: 1px solid #0b848a;
+}
+
+.bingoCell.hovered {
+  background-color: hsl(183, 61%, 77%); /* 드래그 시 강조 */
+  border: 2px solid #0D9CA4; /* 드래그 시 테두리 강조 */
 }
