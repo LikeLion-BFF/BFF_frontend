@@ -14,7 +14,7 @@ import axios from 'axios';
 
 function BingoBuilder() {
   const [bingoName, setBingoName] = useState<string>('');
-  const [selectedSize, setSelectedSize] = useState<number | null>(null);
+  const [selectedSize, setSelectedSize] = useState<number>(3);
   const [datePicked, setDatePicked] = useState<Date | null>(null);
   const [teamInput, setTeamInput] = useState<number>(0);
   const [goalInput, setGoalInput] = useState<number>(0);
@@ -72,30 +72,45 @@ function BingoBuilder() {
   // 추천 내용
   const fetchRecommendItems = async () => {
     try {
-      const response = await axios.post(`${API_URL}/contentAPI/recommend/`, {
-        headers: {
-          Key: 'Authorization',
-          Value: `Bearer ${localStorage.getItem('userToken')}`,
-        },
-      });
-  
-      if (response.status !== 200) {
-        throw new Error('Network response was not ok');
+      const token = localStorage.getItem('userToken'); // Get token from localStorage
+      console.log(`bingo builder token: ${token}`)
+      if (!token) {
+        throw new Error('No user token found.');
       }
+
+      const response = await axios.post(
+        `${API_URL}/contentAPI/recommend/`,
+        {},
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      // Check if response is OK
+      if (response.status !== 200) {
+        throw new Error('Failed to fetch recommended items');
+      }
+
+      // Extract data and set recommend items
       const data = response.data;
       console.log('recommend response data: ', data);
 
-      // 수신한 데이터 ':' 기준 파싱해서 왼쪽만 recommendItem에 넣음
-      const recommendItem = data.missions.map((mission:string) => mission.split(':')[0]);
+      // Parse and extract the recommended items (before ":")
+      const recommendItem = data.missions.map((mission: string) => mission.split(':')[0]);
       setRecommendItems(recommendItem);
     } catch (error) {
       console.error('Error fetching recommend item: ', error);
     }
   };
 
+
   // 화면 로드하고 1번 호출
   useEffect(() => {
-    fetchRecommendItems().catch(console.error);
+    console.log(`bingobuilder usertoken: ${localStorage.getItem('userToken')}`);
+    fetchRecommendItems();
   }, []);
 
   // 빙고판 만들기
@@ -158,8 +173,8 @@ function BingoBuilder() {
       const response = await fetch(`${API_URL}/bingo/create/`, {
         method: 'POST',
         headers: {
-          'Key' : 'Authorization',
-          'Value' : `Bearer ${localStorage.getItem('userToken')}`,
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       });

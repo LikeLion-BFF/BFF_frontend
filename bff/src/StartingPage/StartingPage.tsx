@@ -18,8 +18,8 @@ function StartingPage() {
       
       const response = await axios.post(`${API_URL}/bingo/join/`, {
         headers: {
-          Key: 'Authorization',
-          Value: `Bearer ${localStorage.getItem('userToken')}`,
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+          'Content-Type': 'application/json',
         },
       });
 
@@ -51,8 +51,8 @@ function StartingPage() {
         const userToken = localStorage.getItem('userToken');
         const response = await axios.get(`${API_URL}/bingo/list/`, {
           headers: {
-            Key: 'Authorization',
-            Value: `Bearer ${userToken}`,
+            'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+            'Content-Type': 'application/json',
           }
         });
 

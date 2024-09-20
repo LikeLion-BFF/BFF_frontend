@@ -30,6 +30,9 @@ function App() {
 
     // 로그인 상태 확인
     const userToken = localStorage.getItem('userToken');
+    // const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2ODE5ODQwLCJpYXQiOjE3MjY4MTY4NDAsImp0aSI6IjEyZDI4MDAwZDZhYjRhNzI5ZDU4ZDkwYzAzMTJhNDA0IiwidXNlcl9pZCI6M30.xFvO2LtraIZlCUT3JzhD0Me8SRAYmjQvzpsCNfWRA1Q';
+    // localStorage.setItem('userToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2ODE5ODQwLCJpYXQiOjE3MjY4MTY4NDAsImp0aSI6IjEyZDI4MDAwZDZhYjRhNzI5ZDU4ZDkwYzAzMTJhNDA0IiwidXNlcl9pZCI6M30.xFvO2LtraIZlCUT3JzhD0Me8SRAYmjQvzpsCNfWRA1Q');
+
     if (userToken) {
       setIsLoggedIn(true);
     }
@@ -42,26 +45,25 @@ function App() {
   }, [isLoggedIn, navigate]);
 
   return (
-    // <Routes>
-    //   {!isLoggedIn ? (
-    //     // 로그인 상태가 아니면 로그인 화면을 렌더링
-    //     <Route path="/" element={<Login />} />
-    //   ) : (
-    //     <>
-    //       {/* 기존 경로들은 주석 처리 */}
-    //       <Route path="/" element={<StartingPage />} />
-    //       <Route path="/invite/:inviteCode" element={<Invite />} />
-    //       <Route path="/home/:bingoId/:teamId" element={<Home />} />
-    //       <Route path="/bingobuilder" element={<BingoBuilder />} />
-    //     </>
-    //   )}
+    <Routes>
+      {!isLoggedIn ? (
+        // 로그인 상태가 아니면 로그인 화면을 렌더링
+        <Route path="/" element={<Login />} />
+      ) : (
+        <>
+          {/* 기존 경로들은 주석 처리 */}
+          <Route path="/" element={<StartingPage />} />
+          <Route path="/invite/:inviteCode" element={<Invite />} />
+          <Route path="/home/:bingoId/:teamId" element={<Home />} />
+          <Route path="/bingobuilder" element={<BingoBuilder />} />
+        </>
+      )}
       
-    //   {/* 소셜 로그인 콜백 경로 추가 */}
-    //   <Route path="/kakao-callback" element={<KakaoCallback />} />
-    //   <Route path="/naver-callback" element={<NaverCallback />} />
-    // </Routes>
+      {/* 소셜 로그인 콜백 경로 추가 */}
+      <Route path="/kakao-callback" element={<KakaoCallback />} />
+      <Route path="/naver-callback" element={<NaverCallback />} />
+    </Routes>
 
-    <Login />
   );
 }
 

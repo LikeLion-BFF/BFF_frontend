@@ -12,19 +12,18 @@ function Invite() {
   const [name, setName] = useState<string>(''); // 이름 저장
 
   const navigate = useNavigate();
-  const inviteCode = useParams();
+  const { inviteCode } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
   
         const response = await axios.post(`${API_URL}/bingo/join/`, {
+          code: `${inviteCode}`
+        }, {
           headers: {
-            Key: 'Authorization',
-            Value: `Bearer ${localStorage.getItem('userToken')}`,
-          },
-          body: {
-            "code": `${inviteCode}`
+            'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+            'Content-Type': 'application/json',
           }
         });
   
@@ -44,41 +43,88 @@ function Invite() {
 
   const handleTeamChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
-    console.log(`teamValue: ${event.target.value}`);
     setSelectedTeam(value === "" ? null : Number(value));
+    console.log(`teamValue selected Team: ${selectedTeam}`);
   };
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
-    console.log(event.target.value);
+    console.log(`name: ${name}`);
   };
 
+  // const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault(); // 자동 전송 방지
+  //   try {
+  //     const data = {
+  //       "bingo_id": bingoId,
+  //       "name": name,
+  //       "team_name": `${selectedTeam}팀`
+  //     };
+  
+  //     const response = await axios.post(`${API_URL}/bingo/join/team/`, {
+  //       "bingo_id": bingoId,
+  //       "name": name,
+  //       "team_name": `${selectedTeam}팀`
+  //     }, {
+  //       headers: {
+  //         'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  
+  //     // // 세션에 저장된 초대코드, 빙고 아이디 삭제
+  //     // sessionStorage.removeItem('inviteCode');
+  //     // sessionStorage.removeItem('bingo_id');
+  
+  //     // responseData 출력
+  //     console.log('빙고 참여 응답: ', response.data);
+  //     navigate("/")
+  
+  //   } catch (error) {
+  //     // 전송 실패 에러 보여주기
+  //     console.error('Error submitting data - Invite:', error);
+
+  //     if (axios.isAxiosError(error)) {
+  //       console.error('Error submitting data - Invite:', error.response?.data || error.message);
+  //     } else {
+  //       console.error('An unexpected error occurred:', error);
+  //       // Handle non-Axios errors here
+  //     }
+  //   }
+  // };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // 자동 전송 방지
+    event.preventDefault();
+  
+    if (!bingoId || !name || selectedTeam === null) {
+      console.error("Missing required fields: bingoId, name, or selectedTeam.");
+      return;
+    }
+  
     try {
       const data = {
-        bingo_id: bingoId,
-        name: name,
-        team_name: `${selectedTeam}팀`
+        "bingo_id": bingoId,
+        "name": name,
+        "team_name": `${selectedTeam}팀`,
       };
   
       const response = await axios.post(`${API_URL}/bingo/join/team/`, data, {
         headers: {
-          Key: 'Authorization',
-          Value: `Bearer ${localStorage.getItem('userToken')}`,
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+          'Content-Type': 'application/json',
         },
       });
   
-      // // 세션에 저장된 초대코드, 빙고 아이디 삭제
-      // sessionStorage.removeItem('inviteCode');
-      // sessionStorage.removeItem('bingo_id');
-  
-      // responseData 출력
       console.log('빙고 참여 응답: ', response.data);
-  
+      navigate("/");
     } catch (error) {
       console.error('Error submitting data - Invite:', error);
-      // 전송 실패 에러 보여주기
+  
+      if (axios.isAxiosError(error)) {
+        console.error('Error response from server:', error.response?.data || error.message);
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
     }
   };
 

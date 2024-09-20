@@ -15,10 +15,11 @@ interface MyTeamInfo {
   team_name: string;
   completed_bingo_count: number;
   completed_cell_count: number;
+  goal: number;
 }
 
 function RightMenu() {
-  const [myTeamInfo, setMyTeamInfo] = useState<MyTeamInfo>({team_name: '', completed_bingo_count: 0, completed_cell_count: 0});
+  const [myTeamInfo, setMyTeamInfo] = useState<MyTeamInfo>({team_name: '', completed_bingo_count: 0, completed_cell_count: 0, goal: 0});
   const [teamRanks, setTeamRanks] = useState<TeamRank[]>([]);
   const [endDate, setEndDate] = useState<string>("");
 
@@ -34,8 +35,8 @@ function RightMenu() {
     try {
       const response = await axios.get(`${API_URL}/rank/getOurRank/?bingo_id=${bingoId}&team_id=${teamId}`, {
         headers: {
-          Key: 'Authorization',
-          Value: `Bearer ${localStorage.getItem('userToken')}`,
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+          'Content-Type': 'application/json',
         },
       });
 
@@ -54,8 +55,8 @@ function RightMenu() {
     try {
       const response = await axios.get(`${API_URL}/rank/getTotalRank/?bingo_id=${bingoId}`, {
         headers: {
-          Key: 'Authorization',
-          Value: `Bearer ${localStorage.getItem('userToken')}`,
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+          'Content-Type': 'application/json',
         },
       });
 
@@ -63,8 +64,8 @@ function RightMenu() {
         throw new Error('Network response was not ok');
       };
 
-      console.log(`전체 순위 정보 수신: ${response.data}`);
-      setTeamRanks(response.data);
+      console.log(`전체 순위 정보 수신: ${response.data.progress}`);
+      setTeamRanks(response.data.progress);
     } catch (error) {
       console.error('Error fetching team ranks', error);
     }
@@ -74,8 +75,8 @@ function RightMenu() {
     try {
       const response = await axios.get(`${API_URL}/bingo/end_date/?bingo_id=${bingoId}`, {
         headers: {
-          Key: 'Authorization',
-          Value: `Bearer ${localStorage.getItem('userToken')}`,
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+          'Content-Type': 'application/json',
         },
       });
 
@@ -94,7 +95,7 @@ function RightMenu() {
   };
 
   return (
-    <div className="container">
+    <div className="rightmenu-container">
       <div className="rankBanner">
         <img src={rewardImage} alt="Reward Image" className="rewardStyle" />
         <h1 className="rankText">RANK</h1>
@@ -103,20 +104,18 @@ function RightMenu() {
         <div className="myTeam">
           <h1 className="myTeamRank">우리팀 순위</h1>
           <div className="myTeamMedal">
-            <div className="medal">
-              <h1 className="medalNum">4</h1>
+            <div className="myMedal" style={{ }}>
+              <h1 className="myMedalNum">4</h1>
             </div>
-            <h1 className="teamName">{myTeamInfo.team_name}</h1>
+            <h1 className="myTeamName">{myTeamInfo.team_name}</h1>
           </div>
           <div className="teamStats">
             <h4 className="teamBingos">{myTeamInfo.completed_bingo_count}빙고 {myTeamInfo.completed_cell_count}칸</h4>
-            <h4 className="teamPercent">33%
-              {/* 전체 목표가 뭔지 알아야 계산가능 */}
+            <h4 className="teamPercent">{(myTeamInfo.completed_bingo_count)/(myTeamInfo.goal) * 100}%
             </h4>
           </div>
-          <div className="teamBar">
-            <div className="teamStatBar" style={{width: `$33%`}}>
-              {/* 계산한 값으로 바 그래프 보여주기 */}
+          <div className="myTeamBar">
+            <div className="myTeamStatBar" style={{ width: `${(myTeamInfo.completed_bingo_count)/(myTeamInfo.goal) * 100}%` }}>
             </div>
           </div>
         </div>
@@ -124,19 +123,21 @@ function RightMenu() {
         <div className="allTeamsContainer">
           <h1 className="allTeamText">전체 순위</h1>
           {teamRanks.map((team, index) => (
-            <div className="myTeam" key={index}> 
-              <div className="myTeamMedal">
-                <div className="medal">
-                  <h1 className="medalNum">{index + 1}</h1>
+            <div className="teams" key={index}> 
+              <div className="teamsMedal">
+                <div className="teamMedal">
+                  <div className="medal" style={{ backgroundColor: index === 0 ? '#FABB14' : index === 1 ? '#8FB5B7' : index === 2 ? '#A67361' : 'gray' }}>
+                    <h1 className="medalNum">{index + 1}</h1>
+                  </div>
+                  <h1 className="teamName">{team.team__team_name}</h1>
                 </div>
-                <h1 className="teamName">{team.team__team_name}</h1>
-              </div>
-              <div className="teamStats">
-                <h4 className="teamBingos">{team.completed_bingo_count}빙고 {team.completed_cell_count}칸</h4>
-                <h4 className="teamPercent">33%</h4>
+                <div className="teamsStats">
+                  <h4 className="teamBingos">{team.completed_bingo_count}빙고</h4>
+                  <h4 className="teamPercent">{(team.completed_bingo_count)/(myTeamInfo.goal) * 100}%</h4>
+                </div>
               </div>
               <div className="teamBar">
-                <div className="teamStatBar" style={{width: `33%`}}></div>
+                <div className="teamStatBar" style={{ width: `${(team.completed_bingo_count)/(myTeamInfo.goal) * 100}%` }}></div>
               </div>
             </div>
           ))}

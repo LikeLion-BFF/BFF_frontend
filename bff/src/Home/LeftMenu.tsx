@@ -15,10 +15,10 @@ function LeftMenu() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_URL}/team/detail/?bingo_id=${bingoId}&team_id=${teamId}`, {
+        const response = await axios.get(`${API_URL}/bingo/team/detail/?bingo_id=${bingoId}&team_id=${teamId}`, {
           headers: {
-            Key: 'Authorization',
-            Authorization: `Bearer ${localStorage.getItem('userToken')}`,
+            'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+            'Content-Type': 'application/json',
           },
         });
 

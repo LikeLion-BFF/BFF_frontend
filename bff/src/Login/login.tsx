@@ -113,7 +113,8 @@ function Login() {
     try {
       const response = await axios.get(`${API_URL}/users/detail/`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
         }
       });
       console.log('사용자 정보:', response.data);
@@ -127,7 +128,8 @@ function Login() {
     try {
       const response = await axios.get(`${API_URL}/users/verify/`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
         }
       });
       console.log('토큰 검증 성공:', response.data);
@@ -156,12 +158,12 @@ function Login() {
               onSuccess={async (credentialResponse) => {
                 if (credentialResponse.credential) {
                   const decoded = jwtDecode(credentialResponse.credential);
-                  console.log(decoded);
+                  console.log(`decoded for google: ${decoded}`);
                   localStorage.setItem('userToken', credentialResponse.credential); // local storage에 저장
                   try {
                     const response = await axios.get(`${API_URL}/google/login/`);
-                    console.log(response.data);
-                    navigate("/");
+                    console.log(`response.data for google: ${response.data}`);
+                    navigate("/start");
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   } catch (error: any) {
                     console.error('Error during Axios GET request - Google login: ', error.response);
