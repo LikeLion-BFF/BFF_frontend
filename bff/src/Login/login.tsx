@@ -2,8 +2,8 @@
 // import React from 'react';
 import '../style/login.scss';
 import shortLogo from '../assets/images/short_logo.png';
-import { GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from "jwt-decode";
+// import { GoogleLogin } from '@react-oauth/google';
+// import { jwtDecode } from "jwt-decode";
 import { useEffect } from 'react';
 import { API_URL } from '../API_URL';
 import axios from 'axios';
