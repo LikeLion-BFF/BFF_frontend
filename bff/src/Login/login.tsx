@@ -56,12 +56,13 @@ function Login() {
     if (window.naver) {
       const naverLogin = new window.naver.LoginWithNaverId({
         clientId: "rxdXJKf6trtwICVPPRCc",
-        callbackUrl: "http://${API_URL}/naver/login/",  // 네이버 개발자 센터에 등록한 Redirect URI
+        callbackUrl: 'http://${API_URL}/naver/login/',  // 네이버 개발자 센터에 등록한 Redirect URI
         isPopup: false, // 팝업 형태로 로그인을 수행할지 설정 (true: 팝업, false: 리디렉트)
         loginButton: {color: "green", type: 3, height: 42}
       });
 
       naverLogin.init();
+      console.log("네이버 로그인 초기화 완료");
 
       // 로그인 상태 확인 및 콜백 처리
       naverLogin.getLoginStatus((status: boolean) => {
