@@ -17,7 +17,7 @@ function App() {
     const checkKakao = setInterval(() => {
       if (window.Kakao) {
         if (!Kakao.isInitialized()) {
-          Kakao.init('22de60ab09c3306811daa41beddf0989');
+          Kakao.init('848269971fc479ce5b2f8ce83e88f787');
           console.log('Kakao SDK 초기화 성공:', Kakao.isInitialized());
         } else {
           console.log('Kakao SDK가 이미 초기화되었습니다.');
