@@ -20,7 +20,7 @@ interface MyTeamInfo {
 function RightMenu() {
   const [myTeamInfo, setMyTeamInfo] = useState<MyTeamInfo>({team_name: '', completed_bingo_count: 0, completed_cell_count: 0});
   const [teamRanks, setTeamRanks] = useState<TeamRank[]>([]);
-  const [endDate, setEndDate] = useState<String>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   const { bingoId, teamId } = useParams();
 
