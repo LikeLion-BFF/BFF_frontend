@@ -1,5 +1,5 @@
 // InvitePopup.tsx
-import '../style/invitePopup.scss';
+import '../style/InvitePopup.scss';
 import copyIcon from '../assets/images/copy.png'; // 복사 아이콘 이미지 경로
 
 interface InvitePopupProps {
