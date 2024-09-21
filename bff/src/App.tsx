@@ -29,9 +29,9 @@ function App() {
     }, 500);
 
     // 로그인 상태 확인
-    // const userToken = localStorage.getItem('userToken');
-    const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2ODg2NDAwLCJpYXQiOjE3MjY4ODM0MDAsImp0aSI6IjkyODZkMDVmOGRiMjRhYjZhMDk1NGI4ZmIxNjRkNzRiIiwidXNlcl9pZCI6Mn0.XBM__WE_cg0CEsQSEaEPCDsVHm33tIpkYvMIdCq8S94';
-    localStorage.setItem('userToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2ODg2NDAwLCJpYXQiOjE3MjY4ODM0MDAsImp0aSI6IjkyODZkMDVmOGRiMjRhYjZhMDk1NGI4ZmIxNjRkNzRiIiwidXNlcl9pZCI6Mn0.XBM__WE_cg0CEsQSEaEPCDsVHm33tIpkYvMIdCq8S94');
+    const userToken = localStorage.getItem('accessToken');
+    // const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2ODg2NDAwLCJpYXQiOjE3MjY4ODM0MDAsImp0aSI6IjkyODZkMDVmOGRiMjRhYjZhMDk1NGI4ZmIxNjRkNzRiIiwidXNlcl9pZCI6Mn0.XBM__WE_cg0CEsQSEaEPCDsVHm33tIpkYvMIdCq8S94';
+    // localStorage.setItem('userToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2ODg2NDAwLCJpYXQiOjE3MjY4ODM0MDAsImp0aSI6IjkyODZkMDVmOGRiMjRhYjZhMDk1NGI4ZmIxNjRkNzRiIiwidXNlcl9pZCI6Mn0.XBM__WE_cg0CEsQSEaEPCDsVHm33tIpkYvMIdCq8S94');
 
     console.log(localStorage.getItem('userToken'))
 
