@@ -15,7 +15,7 @@ function Login() {
   // 카카오 로그인 처리 함수
   const handleKakaoLogin = () => {
     Kakao.Auth.authorize({
-      redirectUri: `http://${API_URL}/kakao/login/`  // 카카오 개발자 콘솔에 등록한 Redirect URI
+      redirectUri: `${API_URL}/kakao/login/`  // 카카오 개발자 콘솔에 등록한 Redirect URI
     });
   };
 
@@ -56,7 +56,7 @@ function Login() {
     if (window.naver) {
       const naverLogin = new window.naver.LoginWithNaverId({
         clientId: "rxdXJKf6trtwICVPPRCc",
-        callbackUrl: 'http://${API_URL}/naver/login/',  // 네이버 개발자 센터에 등록한 Redirect URI
+        callbackUrl: `${API_URL}/naver/login/`,  // 네이버 개발자 센터에 등록한 Redirect URI
         isPopup: false, // 팝업 형태로 로그인을 수행할지 설정 (true: 팝업, false: 리디렉트)
         loginButton: {color: "green", type: 3, height: 42}
       });
