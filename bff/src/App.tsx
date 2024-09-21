@@ -30,8 +30,8 @@ function App() {
 
     // 로그인 상태 확인
     // const userToken = localStorage.getItem('userToken');
-    const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2ODg0MzY1LCJpYXQiOjE3MjY4ODEzNjUsImp0aSI6ImEyMTQ1MjAwMjg0NjQ3MGFhMGYzZmQ3YzM5NWYzZGMyIiwidXNlcl9pZCI6Mn0.1R1jJON9ltDNOdFtDExK0091kQS7oXlWXNd9Hn9AAqA';
-    localStorage.setItem('userToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2ODg0MzY1LCJpYXQiOjE3MjY4ODEzNjUsImp0aSI6ImEyMTQ1MjAwMjg0NjQ3MGFhMGYzZmQ3YzM5NWYzZGMyIiwidXNlcl9pZCI6Mn0.1R1jJON9ltDNOdFtDExK0091kQS7oXlWXNd9Hn9AAqA');
+    const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2ODg2NDAwLCJpYXQiOjE3MjY4ODM0MDAsImp0aSI6IjkyODZkMDVmOGRiMjRhYjZhMDk1NGI4ZmIxNjRkNzRiIiwidXNlcl9pZCI6Mn0.XBM__WE_cg0CEsQSEaEPCDsVHm33tIpkYvMIdCq8S94';
+    localStorage.setItem('userToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2ODg2NDAwLCJpYXQiOjE3MjY4ODM0MDAsImp0aSI6IjkyODZkMDVmOGRiMjRhYjZhMDk1NGI4ZmIxNjRkNzRiIiwidXNlcl9pZCI6Mn0.XBM__WE_cg0CEsQSEaEPCDsVHm33tIpkYvMIdCq8S94');
 
     console.log(localStorage.getItem('userToken'))
 

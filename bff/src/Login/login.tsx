@@ -15,7 +15,8 @@ function Login() {
   // 카카오 로그인 처리 함수
   const handleKakaoLogin = () => {
     Kakao.Auth.authorize({
-      redirectUri: `${API_URL}/kakao/login/`  // 카카오 개발자 콘솔에 등록한 Redirect URI
+      // redirectUri: `${API_URL}/kakao/login/`  // 카카오 개발자 콘솔에 등록한 Redirect URI
+      redirectUri: `http://localhost:5173/kakao-callback`
     });
   };
 

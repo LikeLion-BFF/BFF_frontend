@@ -58,34 +58,66 @@
 }
 
 .start-bingoContainer {
-  height: 50vh;
+  height: 75vh;
+  width: 90vw;
   justify-content: center;
   align-items: center;
+  display: flex;
+  overflow-x: auto;
+  // border: 1px solid black;
 }
 
 .start-bingo {
-  background-color: lightgray;
+  background-color: #FE7210;
   text-align: left;
-  width: 25vw;
+  width: 60vw;
   height: 70vh;
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  border-radius: 10px;
+  margin-right: 3vh;
+  padding: 3vh;
 
-  // 가로 스크롤 위한 세팅
-  flex: 0 0 auto; 
-  margin-right: 10px;
+  // // 가로 스크롤 위한 세팅
+  // flex: 0 0 auto;
+  // margin: 3vh;
+  // margin-left: 0;
+  // border: 1px solid black;
+}
+
+.start-bingo:first-child {
+  margin-left: 125vh;
 }
 .start-bingoName {
-  font-size: 2.5vh;
-  margin-bottom: 10vh;
+  margin-bottom: 5vh !important;
+  text-align: left;
+  color: white;
+  font-size: 4vh;
+  font-weight: 700;
+  margin: 2vh;
 }
 .start-bingoItem {
-  width: 22vw;
-  height: 40vh;
-  background-color: gray;
+  width: 35vw;
+  height: 50vh;
+  background-color: transparent;
+  display: flex;
+  // border: 1px solid blue;
 }
+.start-bingo-grid {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.start-bingo-cell {
+  width: 12vw !important;
+  height: 15vh;
+  background-color: #FFE195;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  text-align: center;
+  word-wrap: break-word;
+  border-radius: 10px;
+}
+
 
 .no-bingo-banner {
   font-size: 22px; 
