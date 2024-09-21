@@ -2,8 +2,8 @@
 // import React from 'react';
 import '../style/login.scss';
 import shortLogo from '../assets/images/short_logo.png';
-// import { GoogleLogin } from '@react-oauth/google';
-// import { jwtDecode } from "jwt-decode";
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 import { useEffect } from 'react';
 import { API_URL } from '../API_URL';
 import axios from 'axios';
@@ -157,36 +157,35 @@ function Login() {
           {/* 네이버 로그인 버튼 추가 */}
           <div id="naverIdLogin" className="button" onClick={handleNaverLogin}></div>
 
+          <div id="google-log">
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                if (credentialResponse.credential) {
+                  const decoded = jwtDecode(credentialResponse.credential);
+                  console.log(`decoded for google: ${decoded}`);
+                  localStorage.setItem('userToken', credentialResponse.credential); // local storage에 저장
+                  try {
+                    const response = await axios.get(`${API_URL}/google/login/`);
+                    console.log(`response.data for google: ${response.data}`);
+                    navigate("/start");
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  } catch (error: any) {
+                    console.error('Error during Axios GET request - Google login: ', error.response);
+                  }
+                } else {
+                  console.log('Credential is undefined - Google login');
+                }
+              }}
+              onError={() => {
+                console.log('Login Failed');
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
-{/* <div id="google-log">
-  <GoogleLogin
-    onSuccess={async (credentialResponse) => {
-      if (credentialResponse.credential) {
-        const decoded = jwtDecode(credentialResponse.credential);
-        console.log(`decoded for google: ${decoded}`);
-        localStorage.setItem('userToken', credentialResponse.credential); // local storage에 저장
-        try {
-          const response = await axios.get(`${API_URL}/google/login/`);
-          console.log(`response.data for google: ${response.data}`);
-          navigate("/start");
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-          console.error('Error during Axios GET request - Google login: ', error.response);
-        }
-      } else {
-        console.log('Credential is undefined - Google login');
-      }
-    }}
-    onError={() => {
-      console.log('Login Failed');
-    }}
-  />
-</div> */}
 
 export default Login;
 
