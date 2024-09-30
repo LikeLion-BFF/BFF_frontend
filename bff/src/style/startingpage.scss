@@ -6,7 +6,10 @@
 }
 .start-mainContainer {
   // border: 1px solid green;
-  padding: 5vw;
+  padding: 3vw 5vw;
+  box-sizing: border-box;
+  height: 100vh;
+  width: 100vw;
 }
 .banner {
   display: flex;
@@ -57,67 +60,64 @@
   height: 3vw;
 }
 
+//------내가수정--------
 .start-bingoContainer {
-  height: 75vh;
-  width: 90vw;
-  justify-content: center;
-  align-items: center;
+  box-sizing: border-box;
   display: flex;
+  height: 90%;
+  width: 100%;
   overflow-x: auto;
-  // border: 1px solid black;
+  padding-top: 6vh;
 }
-
 .start-bingo {
   background-color: #FE7210;
-  text-align: left;
-  width: 60vw;
-  height: 70vh;
-  flex-direction: column;
   border-radius: 10px;
-  margin-right: 3vh;
-  padding: 3vh;
-
-  // // 가로 스크롤 위한 세팅
-  // flex: 0 0 auto;
-  // margin: 3vh;
-  // margin-left: 0;
-  // border: 1px solid black;
+  height: 100%;
+  flex: 0 0 600px;  // This line ensures the width is fixed at 2000px
+  margin-right: 2vh;
+  box-sizing: border-box;
 }
-
-.start-bingo:first-child {
-  margin-left: 125vh;
+.start-bingo:last-child {
+  margin-right: 0;
 }
 .start-bingoName {
-  margin-bottom: 5vh !important;
-  text-align: left;
   color: white;
   font-size: 4vh;
   font-weight: 700;
-  margin: 2vh;
+  margin: 2vh 0 1vh 2vh;
 }
-.start-bingoItem {
-  width: 35vw;
-  height: 50vh;
-  background-color: transparent;
+.start-bingoLayout {
+  height: 88%;
   display: flex;
-  // border: 1px solid blue;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 .start-bingo-grid {
-  width: 100%;
+  box-sizing: border-box;
   display: flex;
-  flex-wrap: wrap;
+  margin: 5vh 2vh 2vh 2vh;
+}
+.bingo-row {
+  margin-right: 1.5vh;
+}
+.bingo-row:last-child {
+  margin-right: 0;
 }
 .start-bingo-cell {
-  width: 12vw !important;
-  height: 15vh;
   background-color: #FFE195;
-  margin-bottom: 10px;
-  margin-right: 10px;
-  text-align: center;
-  word-wrap: break-word;
+  margin-bottom: 1.5vh;
   border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 2px 2px 3px gray;
 }
-
+.cell-content {
+  padding: 0 2vh 0 2vh;
+  text-align: center;
+  font-size: 17px;
+}
 
 .no-bingo-banner {
   font-size: 22px; 

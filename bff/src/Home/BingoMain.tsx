@@ -17,10 +17,61 @@ const BingoMain: React.FC = () => {
   const [comment, setComment] = useState('');
   const [isCompleteButtonEnabled, setIsCompleteButtonEnabled] = useState(false);
 
+  const [ teamInfo, setTeamInfo ] = useState<{bingo_title: string, team_name: string, member_count: number, members: string[]}>({ bingo_title: '', team_name: '', member_count: 0, members: [] });
+
+  const [ bingoInfo, setBingoInfo ] = useState<[{row: number, col: number, content: string, is_completed: boolean, completed_photo: null | undefined, completed_text: string}]>([{row: 0, col: 0, content: "", is_completed: false, completed_photo: null, completed_text: ""}])
+
   // URL 파라미터에서 bingoId와 teamId를 가져옴
   const { bingoId, teamId } = useParams<{ bingoId: string; teamId: string }>();  
 
   const modalRef = useRef<HTMLDivElement>(null);
+
+  const fetchTeamInfo = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/bingo/team/detail/?bingo_id=${bingoId}&team_id=${teamId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status !== 200) {
+        throw new Error('Network response was not ok');
+      };
+
+      setTeamInfo(response.data);
+
+      console.log(`팀 정보 수신: ${response.data}`);
+    } catch (error) {
+      console.error('Error fetching getting team info:', error);
+    }
+  }
+
+  const fetchBingo = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/bingo/bingoboard/detail/?bingo_id=${bingoId}&team_id=${teamId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status !== 200) {
+        throw new Error('Network response was not ok');
+      };
+
+      setBingoInfo(response.data.bingo_cells);
+
+      console.log(`빙고 정보 수신: ${response.data.bingo_cells}`);
+    } catch (error) {
+      console.error('Error fetching getting bingo info:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchTeamInfo()
+    fetchBingo()
+  }, [])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -142,11 +193,18 @@ const BingoMain: React.FC = () => {
     }
   };
 
+  const findContentForCell = (index) => {
+    const row = Math.floor(index / 3) + 1;
+    const col = (index % 3) + 1;
+    const cellInfo = bingoInfo.cells.find(cell => cell.row === row && cell.col === col);
+    return cellInfo ? cellInfo.content : '';
+  };
+
   return (
     <div className="bingo-container">
       <div className="bingo-header">
-        <h2>제목없음</h2>
-        <p>(팀명)의 빙고</p>
+        <h2>{teamInfo.bingo_title}</h2>
+        <p>{teamInfo.team_name}의 빙고</p>
       </div>
       <div className="bingo-background">
         <div className="bingo-grid">
@@ -164,7 +222,7 @@ const BingoMain: React.FC = () => {
             >
               {/* 이미지 위에 텍스트 표시, 인증된 경우 흰색, 미인증된 경우 검정색 */}
               <span className={`bingo-text ${bingoStatus[index] ? 'completed' : 'pending'}`}>
-                {`칸 내용 ${index + 1}`}
+                {`${index + 1}`}
               </span>
             </button>
           ))}

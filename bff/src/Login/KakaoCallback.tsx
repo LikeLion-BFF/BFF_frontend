@@ -14,11 +14,10 @@ function KakaoCallback() {
 
       if (code) {
         try {
-          // const response = await axios.get(`${API_URL}/kakao/login/?code=${code}`);
           const response = await axios.get(`${API_URL}/accounts/kakao/login/callback?code=${code}`);
           const { access_token, refresh_token } = response.data;
 
-          localStorage.setItem('access_token', access_token);
+          localStorage.setItem('userToken', access_token);
           localStorage.setItem('refresh_token', refresh_token);
 
           console.log('카카오 로그인 성공:', response.data);

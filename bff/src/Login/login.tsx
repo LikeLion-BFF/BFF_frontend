@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// import React from 'react';
 import '../style/login.scss';
 import shortLogo from '../assets/images/short_logo.png';
 import { GoogleLogin } from '@react-oauth/google';
@@ -15,9 +13,7 @@ function Login() {
   // 카카오 로그인 처리 함수
   const handleKakaoLogin = () => {
     Kakao.Auth.authorize({
-      // redirectUri: `${API_URL}/kakao/login/`  // 카카오 개발자 콘솔에 등록한 Redirect URI
-      // redirectUri: `http://localhost:5173/kakao-callback`
-      redirectUri: `http://localhost:5173/kakao-callback`  // 카카오 개발자 콘솔에 등록한 Redirect URI
+      redirectUri: `http://3.140.221.7:5173/kakao-callback`  // 카카오 개발자 콘솔에 등록한 Redirect URI
     });
   };
 
@@ -95,7 +91,7 @@ function Login() {
         console.log(`userCreated: ${user_created}`)
 
         // 2. access_token 저장
-        localStorage.setItem('access_token', access_token);
+        localStorage.setItem('userToken', access_token);
         localStorage.setItem('refresh_token', refresh_token);
 
         console.log('네이버 로그인 성공:', response.data);
@@ -107,7 +103,7 @@ function Login() {
         await verifyToken(access_token);
 
         // 5. 페이지 리디렉트
-        navigate('/dashboard');
+        navigate('/');
       } catch (error) {
         console.error('네이버 로그인 오류:', error);
       }
@@ -119,7 +115,7 @@ function Login() {
     try {
       const response = await axios.get(`${API_URL}/users/detail/`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         }
       });
@@ -134,7 +130,7 @@ function Login() {
     try {
       const response = await axios.get(`${API_URL}/users/verify/`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         }
       });
@@ -170,9 +166,8 @@ function Login() {
                     const response = await axios.get(`${API_URL}/google/login/`);
                     console.log(`response.data for google: ${response.data}`);
                     navigate("/start");
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  } catch (error: any) {
-                    console.error('Error during Axios GET request - Google login: ', error.response);
+                  } catch (error) {
+                    console.error('Error during Axios GET request - Google login: ', error);
                   }
                 } else {
                   console.log('Credential is undefined - Google login');
