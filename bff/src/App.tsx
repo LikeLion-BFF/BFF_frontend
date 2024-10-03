@@ -7,6 +7,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import Invite from './Invite/Invite';
 import KakaoCallback from './Login/KakaoCallback';  
 import NaverCallback from './Login/NaverCallback';  
+import BingoMain from './Home/BingoMain';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);

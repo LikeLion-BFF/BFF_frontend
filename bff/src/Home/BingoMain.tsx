@@ -7,6 +7,90 @@ import axios from 'axios';
 import { API_URL } from '../API_URL';  
 import { useParams } from 'react-router-dom';  
 
+const dummyData = [
+  {
+      "row": 1,
+      "col": 1,
+      "content": "일초라도안보이면",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 1,
+      "col": 2,
+      "content": "이렇게초조한데",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 1,
+      "col": 3,
+      "content": "삼초는어떻게기다려이야이야ㅣ야이야",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 2,
+      "col": 1,
+      "content": "사랑해 널 사랑해",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 2,
+      "col": 2,
+      "content": "오늘은 말할거야",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 2,
+      "col": 3,
+      "content": "육십억(팔십억)지구에서 널 만난건",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 3,
+      "col": 1,
+      "content": "행운이야~",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 3,
+      "col": 2,
+      "content": "팔딱팔딱뛰는 가슴",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 3,
+      "col": 3,
+      "content": "구해줘 오 내마음~",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  }
+]
+
+interface BingoInfo {
+  row: number;
+  col: number;
+  content: string;
+  is_completed: boolean;
+  completed_photo: null | undefined;
+  completed_text: string;
+};
+
 const BingoMain: React.FC = () => {
   const [bingoStatus, setBingoStatus] = useState<(string | null)[]>(Array(9).fill(null)); 
   const [selectedCell, setSelectedCell] = useState<number | null>(null);
@@ -19,7 +103,7 @@ const BingoMain: React.FC = () => {
 
   const [ teamInfo, setTeamInfo ] = useState<{bingo_title: string, team_name: string, member_count: number, members: string[]}>({ bingo_title: '', team_name: '', member_count: 0, members: [] });
 
-  const [ bingoInfo, setBingoInfo ] = useState<[{row: number, col: number, content: string, is_completed: boolean, completed_photo: null | undefined, completed_text: string}]>([{row: 0, col: 0, content: "", is_completed: false, completed_photo: null, completed_text: ""}])
+  const [ bingoInfo, setBingoInfo ] = useState<BingoInfo>(dummyData);
 
   // URL 파라미터에서 bingoId와 teamId를 가져옴
   const { bingoId, teamId } = useParams<{ bingoId: string; teamId: string }>();  
@@ -208,21 +292,21 @@ const BingoMain: React.FC = () => {
       </div>
       <div className="bingo-background">
         <div className="bingo-grid">
-          {Array(9).fill(null).map((_, index) => (
+          {bingoInfo.map((cell, index) => (
             <button 
               key={index} 
-              className={`bingo-cell ${bingoStatus[index] ? 'completed' : ''}`}  // 완료된 칸에 'completed' 클래스 적용
+              className={`bingo-cell ${cell.is_completed ? 'completed' : ''}`}  // 완료된 칸에 'completed' 클래스 적용
               onClick={() => handleCellClick(index)}
               style={{
-                backgroundImage: bingoStatus[index] ? `url(${bingoStatus[index]})` : 'none', // 이미지가 있으면 배경에 적용
+                backgroundImage: cell.completed_photo ? `url(${cell.completed_photo})` : 'none', // 이미지가 있으면 배경에 적용
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 position: 'relative'
               }}
             >
               {/* 이미지 위에 텍스트 표시, 인증된 경우 흰색, 미인증된 경우 검정색 */}
-              <span className={`bingo-text ${bingoStatus[index] ? 'completed' : 'pending'}`}>
-                {`${index + 1}`}
+              <span className={`bingo-text ${cell.is_completed ? 'completed' : 'pending'}`}>
+                {cell.content}
               </span>
             </button>
           ))}

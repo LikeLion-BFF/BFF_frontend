@@ -80,12 +80,40 @@
 .start-bingo:last-child {
   margin-right: 0;
 }
+.start-bingoBanner {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+.bingoName-Crown {
+  display: flex;
+  align-items: center;
+}
 .start-bingoName {
   color: white;
   font-size: 4vh;
   font-weight: 700;
   margin: 2vh 0 1vh 2vh;
 }
+.bingo-crown {
+  width: 50px;
+  height: 50px;
+  padding: 10px 0 0 5px;
+}
+.start-dots {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 45px;
+  margin: 10px -20px 0 0;
+  color: white;
+  border: 1px solid;
+  width: 100px;
+}
+.start-dots:hover {
+  color: lightgray;
+}
+
 .start-bingoLayout {
   height: 88%;
   display: flex;
@@ -129,4 +157,32 @@
   align-items: center;
   height: 60vh; 
   line-height: 40px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 10px;
+  z-index: 1000;
+  
+  top: 5px;
+  right: -120px;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
+  border-radius: 10px;
 }

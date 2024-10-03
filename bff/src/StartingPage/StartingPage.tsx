@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../style/startingpage.scss';
 import longLogo from '../assets/images/long_logo.png';
+import crown from '../assets/images/crown.png';
 import { API_URL } from '../API_URL';
 
 interface BingoCell {
@@ -18,7 +19,9 @@ interface BingoBoard {
   bingo_id: number;
   team_id: number;
   bingo_title: string;
+  code: string;
   bingo_cells: BingoCell[];
+  is_owner?: boolean;
 }
 
 const dummyData: BingoBoard[] = [
@@ -26,10 +29,11 @@ const dummyData: BingoBoard[] = [
     bingo_id: 32,
     bingo_title: "테스트빙고",
     team_id: 89,
+    code: "2RCOGTF7",
     bingo_cells: [
-      { row: 1, col: 1, content: "열심히수정하는나", is_completed: false, completed_photo: null, completed_text: "" },
-      { row: 1, col: 2, content: "하지만너무졸리다", is_completed: false, completed_photo: null, completed_text: "" },
-      { row: 1, col: 3, content: "이젠난모르겟어살려줘", is_completed: false, completed_photo: null, completed_text: "" },
+      { row: 1, col: 1, content: "열심히수정하기~", is_completed: false, completed_photo: null, completed_text: "" },
+      { row: 1, col: 2, content: "화이팅~~~~~~", is_completed: false, completed_photo: null, completed_text: "" },
+      { row: 1, col: 3, content: "긴글자로써보기~~~~~", is_completed: false, completed_photo: null, completed_text: "" },
       { row: 1, col: 4, content: "1-4", is_completed: false, completed_photo: null, completed_text: "" },
       { row: 1, col: 5, content: "1-5", is_completed: false, completed_photo: null, completed_text: "" },
       { row: 2, col: 1, content: "2-1", is_completed: false, completed_photo: null, completed_text: "" },
@@ -58,6 +62,7 @@ const dummyData: BingoBoard[] = [
     "bingo_id": 31,
     "bingo_title": "Bingo",
     "team_id": 85,
+    "code": "2RCOGTF7",
     "bingo_cells": [
       { "row": 1, "col": 1, "content": "1", "is_completed": false, "completed_photo": null, "completed_text": "" },
       { "row": 1, "col": 2, "content": "2", "is_completed": false, "completed_photo": null, "completed_text": "" },
@@ -81,6 +86,7 @@ const dummyData: BingoBoard[] = [
     "bingo_id": 32,
     "bingo_title": "테스트빙고",
     "team_id": 89,
+    "code": "2RCOGTF7",
     "bingo_cells": [
       { "row": 1, "col": 1, "content": "1-1", "is_completed": false, "completed_photo": null, "completed_text": "" },
       { "row": 1, "col": 2, "content": "1-2", "is_completed": false, "completed_photo": null, "completed_text": "" },
@@ -97,6 +103,7 @@ const dummyData: BingoBoard[] = [
     "bingo_id": 32,
     "bingo_title": "테스트빙고",
     "team_id": 89,
+    "code": "2RCOGTF7",
     "bingo_cells": [
       { "row": 1, "col": 1, "content": "열심히수정합시다~~", "is_completed": false, "completed_photo": null, "completed_text": "" },
       { "row": 1, "col": 2, "content": "미스페레그린과이상한아이들", "is_completed": false, "completed_photo": null, "completed_text": "" },
@@ -114,7 +121,8 @@ const dummyData: BingoBoard[] = [
 function StartingPage(): JSX.Element {
   const navigate = useNavigate();
   const [inviteCode, setInviteCode] = useState<string>('');
-  const [bingoBoards, setBingoBoards] = useState<BingoBoard[]>([]);
+  const [bingoBoards, setBingoBoards] = useState<BingoBoard[]>(dummyData);
+  const [dropdownOpen, setDropdownOpen] = useState<number | null>(null);
 
   const handleInviteCode = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -153,6 +161,56 @@ function StartingPage(): JSX.Element {
     navigate(`/home/${bingoId}/${teamId}`);
   };
 
+  const toggleDropdown = (e: React.MouseEvent, bingoId: number) => {
+    e.stopPropagation(); // 클릭 이벤트 전파 중지
+    if (dropdownOpen === bingoId) {
+      setDropdownOpen(null); // 이미 열려 있는 경우 닫음
+    } else {
+      setDropdownOpen(bingoId); // 새로운 ID에 대해 열음
+    }
+  };
+
+  const copyToClipboard = (code: string) => {
+    if (code !== undefined && code !== null) {
+      navigator.clipboard.writeText(code)
+      .then(() => {
+        alert(`초대코드가 복사되었습니다: ${code}`);
+      })
+      .catch(err => {
+        console.error('초대코드 복사오류: ', err);
+      })
+    } else {
+      console.error('초대코드가 undefined / null임');
+    }
+  };
+
+  const checkIfOwner = async () => {
+    try {
+      const updatedBingoBoards = await Promise.all(
+        bingoBoards.map(async (board) => {
+          try {
+            const response = await axios.get(`${API_URL}/bingo/creater/detail/?bingo_id=${board.bingo_id}`, {
+              headers: {
+                'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+                'Content-Type': 'application/json',
+              }
+            });
+
+            const isOwner = response.data.is_owner ? true : false;
+            return { ...board, is_owner: isOwner };
+          } catch (error) {
+            console.error(`Error checking owner for bingo_id: ${board.bingo_id}`, error);
+            return { ...board, is_owner: false };
+          }
+        })
+      );
+
+      setBingoBoards(updatedBingoBoards);
+    } catch (error) {
+      console.error('Error checking ownership for all bingo boards:', error);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -165,10 +223,13 @@ function StartingPage(): JSX.Element {
 
         console.log(`response data for bingo board: ${response.data}`);
         setBingoBoards(response.data);
+
+        await checkIfOwner(); // 모든 빙고에 대해 관리자인지 여부 확인
       } catch (error) {
         console.error('Error fetching BINGO data:', error);
       }
     };
+
     fetchData();
   }, []);
 
@@ -204,7 +265,33 @@ function StartingPage(): JSX.Element {
           {bingoBoards.length > 0 ? (
             bingoBoards.map((board, index) => (
               <div key={index} className="start-bingo" onClick={() => handleBingoClick(board.bingo_id, board.team_id)}>
-                <p className="start-bingoName">{board.bingo_title}</p>
+                <div className="start-bingoBanner">
+                  <div className="bingoName-Crown">
+                    <p className="start-bingoName">{board.bingo_title}</p>
+                    {board.is_owner && <img src={crown} alt="Crown" className="bingo-crown"/>}
+                  </div>
+                  <button className="start-dots" onClick={(e) => toggleDropdown(e, board.bingo_id)}>
+                    &#8942;
+                  </button>
+                  {dropdownOpen === board.bingo_id && ( // 수정된 부분: dropdown 상태를 이용한 조건부 렌더링
+                    <div className="dropdown-menu">
+                      <ul>
+                          <li onClick={() => {
+                            if (board.code) {
+                              console.log(`초대코드: ${board.code}`);
+                              copyToClipboard(board.code);
+                            } else {
+                              console.log("초대코드가 존재하지 않습니다");
+                            }
+                          }}>
+                            초대코드 복사
+                          </li>
+                        <li onClick={() => console.log('빙고 나가기')}>빙고 나가기</li>
+                        {board.is_owner && <li onClick={() => console.log('빙고 수정')}>빙고 수정</li>}
+                      </ul>
+                    </div>
+                  )}
+                </div>
                 <div className="start-bingoLayout">
                   <div className="start-bingo-grid">
                     {(() => {
