@@ -17,12 +17,12 @@ function NaverCallback() {
           const response = await axios.get(`${API_URL}/naver/login/?code=${code}&state=${state}`);
           const { access_token, refresh_token } = response.data;
           
-          localStorage.setItem('access_token', access_token);
+          localStorage.setItem('userToken', access_token);
           localStorage.setItem('refresh_token', refresh_token);
 
           console.log('네이버 로그인 성공:', response.data);
           
-          navigate('/home');
+          navigate('/');
         } catch (error) {
           console.error('네이버 로그인 처리 오류:', error);
         }

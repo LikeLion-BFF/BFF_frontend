@@ -6,7 +6,10 @@
 }
 .start-mainContainer {
   // border: 1px solid green;
-  padding: 5vw;
+  padding: 3vw 5vw;
+  box-sizing: border-box;
+  height: 100vh;
+  width: 100vw;
 }
 .banner {
   display: flex;
@@ -57,34 +60,91 @@
   height: 3vw;
 }
 
+//------내가수정--------
 .start-bingoContainer {
-  height: 50vh;
-  justify-content: center;
-  align-items: center;
-}
-
-.start-bingo {
-  background-color: lightgray;
-  text-align: left;
-  width: 25vw;
-  height: 70vh;
+  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  height: 90%;
+  width: 100%;
+  overflow-x: auto;
+  padding-top: 6vh;
+}
+.start-bingo {
+  background-color: #FE7210;
+  border-radius: 10px;
+  height: 100%;
+  flex: 0 0 600px;  // This line ensures the width is fixed at 2000px
+  margin-right: 2vh;
+  box-sizing: border-box;
+}
+.start-bingo:last-child {
+  margin-right: 0;
+}
+.start-bingoBanner {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+.bingoName-Crown {
+  display: flex;
   align-items: center;
-
-  // 가로 스크롤 위한 세팅
-  flex: 0 0 auto; 
-  margin-right: 10px;
 }
 .start-bingoName {
-  font-size: 2.5vh;
-  margin-bottom: 10vh;
+  color: white;
+  font-size: 4vh;
+  font-weight: 700;
+  margin: 2vh 0 1vh 2vh;
 }
-.start-bingoItem {
-  width: 22vw;
-  height: 40vh;
-  background-color: gray;
+.bingo-crown {
+  width: 50px;
+  height: 50px;
+  padding: 10px 0 0 5px;
+}
+.start-dots {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 45px;
+  margin: 10px -20px 0 0;
+  color: white;
+  border: 1px solid;
+  width: 100px;
+}
+.start-dots:hover {
+  color: lightgray;
+}
+
+.start-bingoLayout {
+  height: 88%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.start-bingo-grid {
+  box-sizing: border-box;
+  display: flex;
+  margin: 5vh 2vh 2vh 2vh;
+}
+.bingo-row {
+  margin-right: 1.5vh;
+}
+.bingo-row:last-child {
+  margin-right: 0;
+}
+.start-bingo-cell {
+  background-color: #FFE195;
+  margin-bottom: 1.5vh;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 2px 2px 3px gray;
+}
+.cell-content {
+  padding: 0 2vh 0 2vh;
+  text-align: center;
+  font-size: 17px;
 }
 
 .no-bingo-banner {
@@ -97,4 +157,32 @@
   align-items: center;
   height: 60vh; 
   line-height: 40px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 10px;
+  z-index: 1000;
+  
+  top: 5px;
+  right: -120px;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
+  border-radius: 10px;
 }

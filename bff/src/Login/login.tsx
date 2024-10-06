@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// import React from 'react';
 import '../style/login.scss';
 import shortLogo from '../assets/images/short_logo.png';
-// import { GoogleLogin } from '@react-oauth/google';
-// import { jwtDecode } from "jwt-decode";
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 import { useEffect } from 'react';
 import { API_URL } from '../API_URL';
 import axios from 'axios';
@@ -56,7 +54,7 @@ function Login() {
     if (window.naver) {
       const naverLogin = new window.naver.LoginWithNaverId({
         clientId: "rxdXJKf6trtwICVPPRCc",
-        callbackUrl: 'http://${API_URL}/naver/login/',  // 네이버 개발자 센터에 등록한 Redirect URI
+        callbackUrl: `${API_URL}/naver/login/`,  // 네이버 개발자 센터에 등록한 Redirect URI
         isPopup: false, // 팝업 형태로 로그인을 수행할지 설정 (true: 팝업, false: 리디렉트)
         loginButton: {color: "green", type: 3, height: 42}
       });
@@ -93,7 +91,7 @@ function Login() {
         console.log(`userCreated: ${user_created}`)
 
         // 2. access_token 저장
-        localStorage.setItem('access_token', access_token);
+        localStorage.setItem('userToken', access_token);
         localStorage.setItem('refresh_token', refresh_token);
 
         console.log('네이버 로그인 성공:', response.data);
@@ -105,7 +103,7 @@ function Login() {
         await verifyToken(access_token);
 
         // 5. 페이지 리디렉트
-        navigate('/dashboard');
+        navigate('/');
       } catch (error) {
         console.error('네이버 로그인 오류:', error);
       }
@@ -117,7 +115,7 @@ function Login() {
     try {
       const response = await axios.get(`${API_URL}/users/detail/`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         }
       });
@@ -132,7 +130,7 @@ function Login() {
     try {
       const response = await axios.get(`${API_URL}/users/verify/`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         }
       });
@@ -157,36 +155,34 @@ function Login() {
           {/* 네이버 로그인 버튼 추가 */}
           <div id="naverIdLogin" className="button" onClick={handleNaverLogin}></div>
 
+          <div id="google-log">
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                if (credentialResponse.credential) {
+                  const decoded = jwtDecode(credentialResponse.credential);
+                  console.log(`decoded for google: ${decoded}`);
+                  localStorage.setItem('userToken', credentialResponse.credential); // local storage에 저장
+                  try {
+                    const response = await axios.get(`${API_URL}/google/login/`);
+                    console.log(`response.data for google: ${response.data}`);
+                    navigate("/start");
+                  } catch (error) {
+                    console.error('Error during Axios GET request - Google login: ', error);
+                  }
+                } else {
+                  console.log('Credential is undefined - Google login');
+                }
+              }}
+              onError={() => {
+                console.log('Login Failed');
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
-{/* <div id="google-log">
-  <GoogleLogin
-    onSuccess={async (credentialResponse) => {
-      if (credentialResponse.credential) {
-        const decoded = jwtDecode(credentialResponse.credential);
-        console.log(`decoded for google: ${decoded}`);
-        localStorage.setItem('userToken', credentialResponse.credential); // local storage에 저장
-        try {
-          const response = await axios.get(`${API_URL}/google/login/`);
-          console.log(`response.data for google: ${response.data}`);
-          navigate("/start");
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-          console.error('Error during Axios GET request - Google login: ', error.response);
-        }
-      } else {
-        console.log('Credential is undefined - Google login');
-      }
-    }}
-    onError={() => {
-      console.log('Login Failed');
-    }}
-  />
-</div> */}
 
 export default Login;
 

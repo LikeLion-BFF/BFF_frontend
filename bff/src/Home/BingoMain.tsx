@@ -7,6 +7,90 @@ import axios from 'axios';
 import { API_URL } from '../API_URL';  
 import { useParams } from 'react-router-dom';  
 
+const dummyData = [
+  {
+      "row": 1,
+      "col": 1,
+      "content": "일초라도안보이면",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 1,
+      "col": 2,
+      "content": "이렇게초조한데",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 1,
+      "col": 3,
+      "content": "삼초는어떻게기다려이야이야ㅣ야이야",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 2,
+      "col": 1,
+      "content": "사랑해 널 사랑해",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 2,
+      "col": 2,
+      "content": "오늘은 말할거야",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 2,
+      "col": 3,
+      "content": "육십억(팔십억)지구에서 널 만난건",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 3,
+      "col": 1,
+      "content": "행운이야~",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 3,
+      "col": 2,
+      "content": "팔딱팔딱뛰는 가슴",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  },
+  {
+      "row": 3,
+      "col": 3,
+      "content": "구해줘 오 내마음~",
+      "is_completed": false,
+      "completed_photo": null,
+      "completed_text": ""
+  }
+]
+
+interface BingoInfo {
+  row: number;
+  col: number;
+  content: string;
+  is_completed: boolean;
+  completed_photo: null | undefined;
+  completed_text: string;
+};
+
 const BingoMain: React.FC = () => {
   const [bingoStatus, setBingoStatus] = useState<(string | null)[]>(Array(9).fill(null)); 
   const [selectedCell, setSelectedCell] = useState<number | null>(null);
@@ -17,10 +101,61 @@ const BingoMain: React.FC = () => {
   const [comment, setComment] = useState('');
   const [isCompleteButtonEnabled, setIsCompleteButtonEnabled] = useState(false);
 
+  const [ teamInfo, setTeamInfo ] = useState<{bingo_title: string, team_name: string, member_count: number, members: string[]}>({ bingo_title: '', team_name: '', member_count: 0, members: [] });
+
+  const [ bingoInfo, setBingoInfo ] = useState<BingoInfo>(dummyData);
+
   // URL 파라미터에서 bingoId와 teamId를 가져옴
   const { bingoId, teamId } = useParams<{ bingoId: string; teamId: string }>();  
 
   const modalRef = useRef<HTMLDivElement>(null);
+
+  const fetchTeamInfo = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/bingo/team/detail/?bingo_id=${bingoId}&team_id=${teamId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status !== 200) {
+        throw new Error('Network response was not ok');
+      };
+
+      setTeamInfo(response.data);
+
+      console.log(`팀 정보 수신: ${response.data}`);
+    } catch (error) {
+      console.error('Error fetching getting team info:', error);
+    }
+  }
+
+  const fetchBingo = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/bingo/bingoboard/detail/?bingo_id=${bingoId}&team_id=${teamId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status !== 200) {
+        throw new Error('Network response was not ok');
+      };
+
+      setBingoInfo(response.data.bingo_cells);
+
+      console.log(`빙고 정보 수신: ${response.data.bingo_cells}`);
+    } catch (error) {
+      console.error('Error fetching getting bingo info:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchTeamInfo()
+    fetchBingo()
+  }, [])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -142,29 +277,36 @@ const BingoMain: React.FC = () => {
     }
   };
 
+  const findContentForCell = (index) => {
+    const row = Math.floor(index / 3) + 1;
+    const col = (index % 3) + 1;
+    const cellInfo = bingoInfo.cells.find(cell => cell.row === row && cell.col === col);
+    return cellInfo ? cellInfo.content : '';
+  };
+
   return (
     <div className="bingo-container">
       <div className="bingo-header">
-        <h2>제목없음</h2>
-        <p>(팀명)의 빙고</p>
+        <h2>{teamInfo.bingo_title}</h2>
+        <p>{teamInfo.team_name}의 빙고</p>
       </div>
       <div className="bingo-background">
         <div className="bingo-grid">
-          {Array(9).fill(null).map((_, index) => (
+          {bingoInfo.map((cell, index) => (
             <button 
               key={index} 
-              className={`bingo-cell ${bingoStatus[index] ? 'completed' : ''}`}  // 완료된 칸에 'completed' 클래스 적용
+              className={`bingo-cell ${cell.is_completed ? 'completed' : ''}`}  // 완료된 칸에 'completed' 클래스 적용
               onClick={() => handleCellClick(index)}
               style={{
-                backgroundImage: bingoStatus[index] ? `url(${bingoStatus[index]})` : 'none', // 이미지가 있으면 배경에 적용
+                backgroundImage: cell.completed_photo ? `url(${cell.completed_photo})` : 'none', // 이미지가 있으면 배경에 적용
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 position: 'relative'
               }}
             >
               {/* 이미지 위에 텍스트 표시, 인증된 경우 흰색, 미인증된 경우 검정색 */}
-              <span className={`bingo-text ${bingoStatus[index] ? 'completed' : 'pending'}`}>
-                {`칸 내용 ${index + 1}`}
+              <span className={`bingo-text ${cell.is_completed ? 'completed' : 'pending'}`}>
+                {cell.content}
               </span>
             </button>
           ))}
