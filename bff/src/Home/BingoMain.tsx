@@ -81,6 +81,13 @@ const dummyData = [
       "completed_text": ""
   }
 ]
+// 더미 팀 정보
+const dummyTeamInfo = {
+  bingo_title: "더미 빙고 타이틀",
+  team_name: "더미 팀 이름",
+  member_count: 4,
+  members: ["회원1", "회원2", "회원3", "회원4"],
+};
 
 interface BingoInfo {
   row: number;
@@ -110,52 +117,69 @@ const BingoMain: React.FC = () => {
 
   const modalRef = useRef<HTMLDivElement>(null);
 
+  //확인후 지우기
+  // 서버에서 데이터를 불러오는 대신, 더미 데이터를 사용하는 방식
   const fetchTeamInfo = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/bingo/team/detail/?bingo_id=${bingoId}&team_id=${teamId}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.status !== 200) {
-        throw new Error('Network response was not ok');
-      };
-
-      setTeamInfo(response.data);
-
-      console.log(`팀 정보 수신: ${response.data}`);
-    } catch (error) {
-      console.error('Error fetching getting team info:', error);
-    }
-  }
+    console.log('서버 대신 더미 팀 정보 사용');
+    setTeamInfo(dummyTeamInfo);  // 더미 팀 정보 적용
+  };
 
   const fetchBingo = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/bingo/bingoboard/detail/?bingo_id=${bingoId}&team_id=${teamId}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.status !== 200) {
-        throw new Error('Network response was not ok');
-      };
-
-      setBingoInfo(response.data.bingo_cells);
-
-      console.log(`빙고 정보 수신: ${response.data.bingo_cells}`);
-    } catch (error) {
-      console.error('Error fetching getting bingo info:', error);
-    }
-  }
+    console.log('서버 대신 더미 빙고 정보 사용');
+    setBingoInfo(dummyData);  // 더미 빙고 정보 적용
+  };
 
   useEffect(() => {
-    fetchTeamInfo()
-    fetchBingo()
-  }, [])
+    fetchTeamInfo();  // 더미 데이터를 사용하여 초기화
+    fetchBingo();
+  }, []);
+
+  // const fetchTeamInfo = async () => {
+  //   try {
+  //     const response = await axios.get(`${API_URL}/bingo/team/detail/?bingo_id=${bingoId}&team_id=${teamId}`, {
+  //       headers: {
+  //         'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+
+  //     if (response.status !== 200) {
+  //       throw new Error('Network response was not ok');
+  //     };
+
+  //     setTeamInfo(response.data);
+
+  //     console.log(`팀 정보 수신: ${response.data}`);
+  //   } catch (error) {
+  //     console.error('Error fetching getting team info:', error);
+  //   }
+  // }
+
+  // const fetchBingo = async () => {
+  //   try {
+  //     const response = await axios.get(`${API_URL}/bingo/bingoboard/detail/?bingo_id=${bingoId}&team_id=${teamId}`, {
+  //       headers: {
+  //         'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+
+  //     if (response.status !== 200) {
+  //       throw new Error('Network response was not ok');
+  //     };
+
+  //     setBingoInfo(response.data.bingo_cells);
+
+  //     console.log(`빙고 정보 수신: ${response.data.bingo_cells}`);
+  //   } catch (error) {
+  //     console.error('Error fetching getting bingo info:', error);
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   fetchTeamInfo()
+  //   fetchBingo()
+  // }, [])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -178,16 +202,6 @@ const BingoMain: React.FC = () => {
     }
   };
 
-  const handleCellClick = (index: number) => {
-    setSelectedCell(index);
-    setShowModal(true);
-    setHasLiked(false);
-    console.log(hasLiked);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
 
   // const handleLikeClick = () => {
   //   if (!hasLiked) {
@@ -223,13 +237,13 @@ const BingoMain: React.FC = () => {
     }
   }, [uploadedImage]);
 
-  // 이미지 업로드 후 '완료' 버튼을 눌렀을 때 백엔드로 데이터를 전송하는 함수
   const handleCompleteClick = async () => {
     if (selectedCell !== null && uploadedImage && bingoId && teamId) {
+      // 선택한 셀의 상태를 업데이트 (업로드된 이미지를 해당 셀에만 저장)
       const updatedBingoStatus = [...bingoStatus];
-      updatedBingoStatus[selectedCell] = uploadedImage; // 선택한 칸에 업로드한 이미지를 저장
+      updatedBingoStatus[selectedCell] = uploadedImage;  // 해당 셀에 이미지 저장
       setBingoStatus(updatedBingoStatus);
-
+  
       // 백엔드로 이미지 및 인증 정보 전달
       try {
         const userToken = localStorage.getItem('userToken');  // 토큰 가져오기
@@ -250,12 +264,31 @@ const BingoMain: React.FC = () => {
           }
         );
         console.log('인증 성공:', response.data);
+  
+        // 업로드 완료 후 빙고판 정보를 다시 불러옴
+        await fetchBingo();  // 빙고판 정보 다시 불러오기
+  
+        // 모달 닫기
+        handleCloseModal();
       } catch (error) {
         console.error('인증 실패:', error);
       }
-
-      handleCloseModal(); // 모달 닫기
     }
+  };
+  
+  // 칸을 클릭할 때 해당 칸의 이미지 상태를 유지하면서 모달 열기
+  const handleCellClick = (index: number) => {
+    setSelectedCell(index);  // 선택한 셀 저장
+    setUploadedImage(bingoStatus[index]);  // 해당 셀에 저장된 이미지를 불러옴
+    setShowModal(true);  // 모달 표시
+    setHasLiked(false);  // 좋아요 상태 초기화
+  };
+  
+  // 모달을 닫을 때 상태 초기화
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setUploadedImage(null); // 모달을 닫을 때 이미지 초기화 (다른 칸에 영향을 주지 않음)
+    setComment(''); // 코멘트 초기화
   };
 
   const handleDownloadClick = () => {

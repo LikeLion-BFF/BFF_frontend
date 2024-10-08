@@ -91,7 +91,8 @@ function App() {
     //   <Route path="/naver-callback" element={<NaverCallback />} />
     // </Routes>
     // <BingoBuilder />
-    <StartingPage />
+    // <StartingPage />
+    <BingoMain />
   );
 }
 
