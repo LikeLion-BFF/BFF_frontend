@@ -121,7 +121,7 @@ const dummyData: BingoBoard[] = [
 function StartingPage(): JSX.Element {
   const navigate = useNavigate();
   const [inviteCode, setInviteCode] = useState<string>('');
-  const [bingoBoards, setBingoBoards] = useState<BingoBoard[]>(dummyData);
+  const [bingoBoards, setBingoBoards] = useState<BingoBoard[]>();
   const [dropdownOpen, setDropdownOpen] = useState<number | null>(null);
 
   const handleInviteCode = async (e: FormEvent<HTMLFormElement>): Promise<void> => {

@@ -110,76 +110,76 @@ const BingoMain: React.FC = () => {
 
   const [ teamInfo, setTeamInfo ] = useState<{bingo_title: string, team_name: string, member_count: number, members: string[]}>({ bingo_title: '', team_name: '', member_count: 0, members: [] });
 
-  const [ bingoInfo, setBingoInfo ] = useState<BingoInfo>(dummyData);
+  const [ bingoInfo, setBingoInfo ] = useState<BingoInfo>();
 
   // URL 파라미터에서 bingoId와 teamId를 가져옴
   const { bingoId, teamId } = useParams<{ bingoId: string; teamId: string }>();  
 
   const modalRef = useRef<HTMLDivElement>(null);
 
-  //확인후 지우기
-  // 서버에서 데이터를 불러오는 대신, 더미 데이터를 사용하는 방식
-  const fetchTeamInfo = async () => {
-    console.log('서버 대신 더미 팀 정보 사용');
-    setTeamInfo(dummyTeamInfo);  // 더미 팀 정보 적용
-  };
-
-  const fetchBingo = async () => {
-    console.log('서버 대신 더미 빙고 정보 사용');
-    setBingoInfo(dummyData);  // 더미 빙고 정보 적용
-  };
-
-  useEffect(() => {
-    fetchTeamInfo();  // 더미 데이터를 사용하여 초기화
-    fetchBingo();
-  }, []);
-
+  //! 더미데이터 fetch
+  // // 서버에서 데이터를 불러오는 대신, 더미 데이터를 사용하는 방식
   // const fetchTeamInfo = async () => {
-  //   try {
-  //     const response = await axios.get(`${API_URL}/bingo/team/detail/?bingo_id=${bingoId}&team_id=${teamId}`, {
-  //       headers: {
-  //         'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-
-  //     if (response.status !== 200) {
-  //       throw new Error('Network response was not ok');
-  //     };
-
-  //     setTeamInfo(response.data);
-
-  //     console.log(`팀 정보 수신: ${response.data}`);
-  //   } catch (error) {
-  //     console.error('Error fetching getting team info:', error);
-  //   }
-  // }
+  //   console.log('서버 대신 더미 팀 정보 사용');
+  //   setTeamInfo(dummyTeamInfo);  // 더미 팀 정보 적용
+  // };
 
   // const fetchBingo = async () => {
-  //   try {
-  //     const response = await axios.get(`${API_URL}/bingo/bingoboard/detail/?bingo_id=${bingoId}&team_id=${teamId}`, {
-  //       headers: {
-  //         'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-
-  //     if (response.status !== 200) {
-  //       throw new Error('Network response was not ok');
-  //     };
-
-  //     setBingoInfo(response.data.bingo_cells);
-
-  //     console.log(`빙고 정보 수신: ${response.data.bingo_cells}`);
-  //   } catch (error) {
-  //     console.error('Error fetching getting bingo info:', error);
-  //   }
-  // }
+  //   console.log('서버 대신 더미 빙고 정보 사용');
+  //   setBingoInfo(dummyData);  // 더미 빙고 정보 적용
+  // };
 
   // useEffect(() => {
-  //   fetchTeamInfo()
-  //   fetchBingo()
-  // }, [])
+  //   fetchTeamInfo();  // 더미 데이터를 사용하여 초기화
+  //   fetchBingo();
+  // }, []);
+
+  const fetchTeamInfo = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/bingo/team/detail/?bingo_id=${bingoId}&team_id=${teamId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status !== 200) {
+        throw new Error('Network response was not ok');
+      };
+
+      setTeamInfo(response.data);
+
+      console.log(`팀 정보 수신: ${response.data}`);
+    } catch (error) {
+      console.error('Error fetching getting team info:', error);
+    }
+  }
+
+  const fetchBingo = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/bingo/bingoboard/detail/?bingo_id=${bingoId}&team_id=${teamId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status !== 200) {
+        throw new Error('Network response was not ok');
+      };
+
+      setBingoInfo(response.data.bingo_cells);
+
+      console.log(`빙고 정보 수신: ${response.data.bingo_cells}`);
+    } catch (error) {
+      console.error('Error fetching getting bingo info:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchTeamInfo()
+    fetchBingo()
+  }, [])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

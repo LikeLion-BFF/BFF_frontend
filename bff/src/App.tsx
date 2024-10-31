@@ -7,7 +7,7 @@ import {Route, Routes, useNavigate} from 'react-router-dom';
 import Invite from './Invite/Invite';
 import KakaoCallback from './Login/KakaoCallback';  
 import NaverCallback from './Login/NaverCallback';  
-import BingoMain from './Home/BingoMain';
+// import BingoMain from './Home/BingoMain';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -28,6 +28,8 @@ function App() {
         console.error('Kakao SDK가 로드되지 않았습니다.');
       }
     }, 500);
+
+    localStorage.removeItem('userToken'); // 유저토큰 초기화
 
     // 로그인 상태 확인
     const userToken = localStorage.getItem('userToken');
@@ -70,29 +72,27 @@ function App() {
   }, [isLoggedIn, navigate]);
 
   return (
-    // <Routes>
-    //   {!isLoggedIn ? (
-    //     // 로그인 상태가 아니면 로그인 화면을 렌더링
-    //     <>
-    //       <Route path="/" element={<Login />} />
-    //     </>
-    //   ) : (
-    //     <>
-    //       {/* 기존 경로들은 주석 처리 */}
-    //       <Route path="/" element={<StartingPage />} />
-    //       <Route path="/invite/:inviteCode" element={<Invite />} />
-    //       <Route path="/home/:bingoId/:teamId" element={<Home />} />
-    //       <Route path="/bingobuilder" element={<BingoBuilder />} />
-    //     </>
-    //   )}
+    <Routes>
+      {!isLoggedIn ? (
+        // 로그인 상태가 아니면 로그인 화면을 렌더링
+        <>
+          <Route path="/" element={<Login />} />
+        </>
+      ) : (
+        <>
+          {/* 기존 경로들은 주석 처리 */}
+          <Route path="/" element={<StartingPage />} />
+          <Route path="/invite/:inviteCode" element={<Invite />} />
+          <Route path="/home/:bingoId/:teamId" element={<Home />} />
+          <Route path="/bingobuilder" element={<BingoBuilder />} />
+        </>
+      )}
       
-    //   {/* 소셜 로그인 콜백 경로 추가 */}
-    //   <Route path="/kakao-callback" element={<KakaoCallback />} />
-    //   <Route path="/naver-callback" element={<NaverCallback />} />
-    // </Routes>
+      {/* 소셜 로그인 콜백 경로 추가 */}
+      <Route path="/kakao-callback" element={<KakaoCallback />} />
+      <Route path="/naver-callback" element={<NaverCallback />} />
+    </Routes>
     // <BingoBuilder />
-    // <StartingPage />
-    <BingoMain />
   );
 }
 
