@@ -29,7 +29,7 @@ function App() {
       }
     }, 500);
 
-    localStorage.removeItem('userToken'); // 유저토큰 초기화
+    // localStorage.removeItem('userToken'); // 유저토큰 초기화
 
     // 로그인 상태 확인
     const userToken = localStorage.getItem('userToken');
