@@ -92,7 +92,6 @@ function App() {
       <Route path="/kakao-callback" element={<KakaoCallback />} />
       <Route path="/naver-callback" element={<NaverCallback />} />
     </Routes>
-    // <BingoBuilder />
   );
 }
 

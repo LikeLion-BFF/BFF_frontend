@@ -148,37 +148,37 @@ function BingoBuilder() {
   // 추천 내용
   const fetchRecommendItems = async () => {
     try {
-      const token = localStorage.getItem('userToken');
-      if (!token) {
-        throw new Error('No user token found.');
-      }
+      // const token = localStorage.getItem('userToken');
+      // if (!token) {
+      //   throw new Error('No user token found.');
+      // }
 
-      const response = await axios.post(
-        `${API_URL}/contentAPI/recommend/`,
-        {},
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      // const response = await axios.post(
+      //   `${API_URL}/contentAPI/recommend/`,
+      //   {},
+      //   {
+      //     headers: {
+      //       'Authorization': `Bearer ${token}`,
+      //       'Content-Type': 'application/json',
+      //     },
+      //   }
+      // );
 
-      if (response.status !== 200) {
-        throw new Error('Failed to fetch recommended items');
-      }
+      // if (response.status !== 200) {
+      //   throw new Error('Failed to fetch recommended items');
+      // }
 
       console.log('is this working?')
-      const data = response.data;
-      const recommendItem = data.missions.map((mission: string) => mission.split(':')[0]);
-      setRecommendItems(recommendItem);
+      // const data = response.data;
+      // const recommendItem = data.missions.map((mission: string) => mission.split(':')[0]);
+      // setRecommendItems(recommendItem);
 
-      console.log(`recommendItem: `, recommendItem);
+      // console.log(`recommendItem: `, recommendItem);
 
-      // const modDummyData = dummyData.missions.map(( mission: string) => mission.split(':')[0])
-      // setRecommendItems(modDummyData); //! dummyData로 설정
+      const modDummyData = dummyData.missions.map(( mission: string) => mission.split(':')[0])
+      setRecommendItems(modDummyData); //! dummyData로 설정
 
-      // console.log("Mod Dummy Data:", modDummyData);
+      console.log("Mod Dummy Data:", modDummyData);
     } catch (error) {
       console.error('Error fetching recommend item: ', error);
     }

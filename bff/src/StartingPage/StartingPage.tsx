@@ -31,9 +31,9 @@ const dummyData: BingoBoard[] = [
     team_id: 89,
     code: "2RCOGTF7",
     bingo_cells: [
-      { row: 1, col: 1, content: "열심히수정하기~", is_completed: false, completed_photo: null, completed_text: "" },
-      { row: 1, col: 2, content: "화이팅~~~~~~", is_completed: false, completed_photo: null, completed_text: "" },
-      { row: 1, col: 3, content: "긴글자로써보기~~~~~", is_completed: false, completed_photo: null, completed_text: "" },
+      { row: 1, col: 1, content: "임시 테스트 내용", is_completed: false, completed_photo: null, completed_text: "" },
+      { row: 1, col: 2, content: "임시 테스트 내용2", is_completed: false, completed_photo: null, completed_text: "" },
+      { row: 1, col: 3, content: "임시 테스트 내용3", is_completed: false, completed_photo: null, completed_text: "" },
       { row: 1, col: 4, content: "1-4", is_completed: false, completed_photo: null, completed_text: "" },
       { row: 1, col: 5, content: "1-5", is_completed: false, completed_photo: null, completed_text: "" },
       { row: 2, col: 1, content: "2-1", is_completed: false, completed_photo: null, completed_text: "" },
@@ -105,9 +105,9 @@ const dummyData: BingoBoard[] = [
     "team_id": 89,
     "code": "2RCOGTF7",
     "bingo_cells": [
-      { "row": 1, "col": 1, "content": "열심히수정합시다~~", "is_completed": false, "completed_photo": null, "completed_text": "" },
-      { "row": 1, "col": 2, "content": "미스페레그린과이상한아이들", "is_completed": false, "completed_photo": null, "completed_text": "" },
-      { "row": 1, "col": 3, "content": "주먹꾹.....................", "is_completed": false, "completed_photo": null, "completed_text": "" },
+      { "row": 1, "col": 1, "content": "임시 테스트 내용", "is_completed": false, "completed_photo": null, "completed_text": "" },
+      { "row": 1, "col": 2, "content": "임시 테스트 내용2", "is_completed": false, "completed_photo": null, "completed_text": "" },
+      { "row": 1, "col": 3, "content": "임시 테스트 내용3", "is_completed": false, "completed_photo": null, "completed_text": "" },
       { "row": 2, "col": 1, "content": "2-1", "is_completed": false, "completed_photo": null, "completed_text": "" },
       { "row": 2, "col": 2, "content": "2-2", "is_completed": false, "completed_photo": null, "completed_text": "" },
       { "row": 2, "col": 3, "content": "2-3", "is_completed": false, "completed_photo": null, "completed_text": "" },
@@ -121,7 +121,7 @@ const dummyData: BingoBoard[] = [
 function StartingPage(): JSX.Element {
   const navigate = useNavigate();
   const [inviteCode, setInviteCode] = useState<string>('');
-  const [bingoBoards, setBingoBoards] = useState<BingoBoard[]>();
+  const [bingoBoards, setBingoBoards] = useState<BingoBoard[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState<number | null>(null);
 
   const handleInviteCode = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
@@ -184,47 +184,47 @@ function StartingPage(): JSX.Element {
     }
   };
 
-  const checkIfOwner = async () => {
-    try {
-      const updatedBingoBoards = await Promise.all(
-        bingoBoards.map(async (board) => {
-          try {
-            const response = await axios.get(`${API_URL}/bingo/creater/detail/?bingo_id=${board.bingo_id}`, {
-              headers: {
-                'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
-                'Content-Type': 'application/json',
-              }
-            });
+  // const checkIfOwner = async () => {
+  //   try {
+  //     const updatedBingoBoards = await Promise.all(
+  //       bingoBoards.map(async (board) => {
+  //         try {
+  //           const response = await axios.get(`${API_URL}/bingo/creater/detail/?bingo_id=${board.bingo_id}`, {
+  //             headers: {
+  //               'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+  //               'Content-Type': 'application/json',
+  //             }
+  //           });
 
-            const isOwner = response.data.is_owner ? true : false;
-            return { ...board, is_owner: isOwner };
-          } catch (error) {
-            console.error(`Error checking owner for bingo_id: ${board.bingo_id}`, error);
-            return { ...board, is_owner: false };
-          }
-        })
-      );
+  //           const isOwner = response.data.is_owner ? true : false;
+  //           return { ...board, is_owner: isOwner };
+  //         } catch (error) {
+  //           console.error(`Error checking owner for bingo_id: ${board.bingo_id}`, error);
+  //           return { ...board, is_owner: false };
+  //         }
+  //       })
+  //     );
 
-      setBingoBoards(updatedBingoBoards);
-    } catch (error) {
-      console.error('Error checking ownership for all bingo boards:', error);
-    }
-  };
+  //     setBingoBoards(updatedBingoBoards);
+  //   } catch (error) {
+  //     console.error('Error checking ownership for all bingo boards:', error);
+  //   }
+  // };
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const response = await axios.get(`${API_URL}/bingo/list/`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
-            'Content-Type': 'application/json',
-          }
-        });
+        // const response = await axios.get(`${API_URL}/bingo/list/`, {
+        //   headers: {
+        //     'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
+        //     'Content-Type': 'application/json',
+        //   }
+        // });
 
-        console.log(`response data for bingo board: ${response.data}`);
-        setBingoBoards(response.data);
+        // console.log(`response data for bingo board: ${response.data}`);
+        setBingoBoards(dummyData);
 
-        await checkIfOwner(); // 모든 빙고에 대해 관리자인지 여부 확인
+        // await checkIfOwner(); // 모든 빙고에 대해 관리자인지 여부 확인
       } catch (error) {
         console.error('Error fetching BINGO data:', error);
       }
